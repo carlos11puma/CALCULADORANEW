@@ -1,15 +1,24 @@
 name: Paso 0 (una sola vez) - actualizar dependencias vulnerables
 
-# Ejecuta manualmente, con el botón "Run workflow" de la pestaña Actions, lo que
-# environment-inventory.md § Paso 0 pedía correr en una computadora con npm/red real:
-# `npm audit fix` + `npm audit fix --force` (cierra T-10 de build-and-test-summary.md,
+# Ejecuta manualmente, con el botón "Run workflow" de la pestaña Actions, la parte SEGURA
+# de environment-inventory.md § Paso 0 (cierra parcialmente T-10 de build-and-test-summary.md,
 # team.md § Deployment punto 1). El cliente Prisma real (R-01) ya quedó cerrado por
-# backend-api-ci.yml, que corre `prisma generate` en cada push — no se repite acá.
+# backend-api-ci.yml, que corre `prisma generate` en cada push - no se repite acá.
+#
+# IMPORTANTE - decisión tomada con Carlos el 2026-09-13 (ver
+# operation/environment-provisioning/riesgo-residual-dependencias.md): este workflow
+# corre SOLO `npm audit fix` sin `--force`. La opción `--force` fue probada y rompió
+# NestJS en tiempo de ejecución (@nestjs/common y @nestjs/core quedan en versiones
+# mayores incompatibles entre sí) - cerrar las vulnerabilidades críticas/altas restantes
+# requiere migrar NestJS v10->v12 y el SDK de Expo v51->v57, migraciones grandes que
+# necesitan su propio trabajo de código y pruebas de regresión, no un fix automático.
+# Carlos decidió desplegar ahora con el riesgo residual documentado en vez de bloquear
+# el despliegue por esas dos migraciones.
 #
 # Solo commitea y pushea los cambios si TODA la suite de pruebas sigue en verde después
-# de aplicar los fixes. Si algo se rompe, el workflow falla en rojo y no se guarda nada
-# (project.md § Forbidden: nunca desplegar sin validar). Pensado para correrse una sola
-# vez; podés borrar este archivo del repo después de que pase en verde.
+# de aplicar los fixes seguros. Si algo se rompe, el workflow falla en rojo y no se guarda
+# nada (project.md § Forbidden: nunca desplegar sin validar). Pensado para correrse una
+# sola vez; podés borrar este archivo del repo después de que pase en verde.
 
 on:
   workflow_dispatch: {}
@@ -28,18 +37,17 @@ jobs:
 
       - run: npm install
 
-      - name: npm audit fix (cambios sin romper compatibilidad)
-        run: npm audit fix || true
-
-      - name: npm audit fix --force (incluye cambios que podrían romper algo - se valida abajo)
-        run: npm audit fix --force || true
+      - name: npm audit fix (SOLO cambios sin romper compatibilidad - sin --force)
+        run: |
+          npm audit fix --workspace=packages/api-contract || true
+          npm audit fix --workspace=packages/backend-api || true
+          npm audit fix --workspace=packages/mobile-app || true
 
       - name: Reinstalar con las versiones ya actualizadas
         run: npm install
 
       # A partir de acá: si CUALQUIERA de estos pasos falla, el workflow se detiene y
-      # NADA se commitea ni se pushea - los audit fix de arriba quedan solo en este runner
-      # temporal, no tocan el repositorio real.
+      # NADA se commitea ni se pushea.
       - run: npm run build --workspace=packages/api-contract
       - run: npm test --workspace=packages/api-contract -- --coverage
 
@@ -50,11 +58,14 @@ jobs:
       - run: npm run typecheck --workspace=packages/mobile-app
       - run: npm test --workspace=packages/mobile-app -- --coverage
 
-      - name: Confirmar que ya no quedan vulnerabilidades críticas/altas en producción
+      - name: Reporte de vulnerabilidades restantes (informativo, no bloquea)
         run: |
-          npm audit --workspace=packages/api-contract --omit=dev --audit-level=high
-          npm audit --workspace=packages/backend-api --omit=dev --audit-level=high
-          npm audit --workspace=packages/mobile-app --omit=dev --audit-level=high
+          echo "--- api-contract ---"
+          npm audit --workspace=packages/api-contract --omit=dev --audit-level=high || true
+          echo "--- backend-api ---"
+          npm audit --workspace=packages/backend-api --omit=dev --audit-level=high || true
+          echo "--- mobile-app ---"
+          npm audit --workspace=packages/mobile-app --omit=dev --audit-level=high || true
 
       - name: Guardar los cambios en el repositorio (solo si todo lo de arriba pasó)
         run: |
@@ -65,5 +76,5 @@ jobs:
             exit 0
           fi
           git add -A
-          git commit -m "chore: actualizar dependencias vulnerables (Paso 0, cierra T-10)"
+          git commit -m "chore: actualizar dependencias vulnerables sin romper compatibilidad (Paso 0)"
           git push
