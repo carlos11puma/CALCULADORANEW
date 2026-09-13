@@ -1,0 +1,50 @@
+name: Limpieza (una sola vez) - sacar node_modules del repositorio
+
+# El .gitignore original se quedó fuera del primer paquete subido al repo (error humano
+# al armar el zip inicial), así que Git terminó versionando node_modules por accidente
+# cuando paso-0-prerequisitos.yml corrió `npm install`. Este workflow:
+#  1. Agrega el .gitignore correcto (si falta o está incompleto).
+#  2. Saca node_modules del control de versiones (los archivos siguen existiendo en tu
+#     computadora/en cada instalación, solo dejan de estar en GitHub).
+#  3. Confirma que el proyecto sigue buildeando y las pruebas siguen en verde antes de
+#     guardar el cambio - si algo falla, no se commitea nada.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  limpiar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Asegurar que .gitignore excluye node_modules y carpetas generadas
+        run: |
+          touch .gitignore
+          for pattern in "node_modules" "dist" "coverage" ".DS_Store"; do
+            grep -qxF "$pattern" .gitignore || echo "$pattern" >> .gitignore
+          done
+
+      - name: Sacar node_modules del control de versiones (los archivos quedan intactos en disco)
+        run: git rm -r --cached --ignore-unmatch node_modules packages/*/node_modules
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install
+
+      - run: npm run build --workspace=packages/api-contract
+      - run: npm run prisma:generate --workspace=packages/backend-api
+      - run: npm run build --workspace=packages/backend-api
+      - run: npm run typecheck --workspace=packages/mobile-app
+
+      - name: Guardar el cambio en el repositorio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .gitignore
+          git commit -m "chore: sacar node_modules del repositorio y agregar .gitignore correcto"
+          git push
