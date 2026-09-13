@@ -35,7 +35,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     // Sobrescrito por perfil en eas.json (build.<profile>.env / EAS Update channel env).
     apiBaseUrl: process.env.API_BASE_URL ?? "https://api.calculadora-comisiones.local",
     eas: {
-      projectId: process.env.EAS_PROJECT_ID ?? "00000000-0000-0000-0000-000000000000",
+      // ID real del proyecto EAS de Carlos (expo.dev, cuenta CarlosPuma11), creado 2026-09-13.
+      projectId: process.env.EAS_PROJECT_ID ?? "47dc62ba-90ee-4558-bd17-10aa8660c090",
     },
   },
   // "expo-sqlite" se sacó de esta lista (2026-09-13): solo hace falta declararlo como plugin
@@ -48,7 +49,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: ["expo-notifications", "expo-secure-store"],
   updates: {
     // Canal resuelto por perfil de EAS Build / EAS Update (cicd-pipeline.md).
-    url: "https://u.expo.dev/00000000-0000-0000-0000-000000000000",
+    url: "https://u.expo.dev/47dc62ba-90ee-4558-bd17-10aa8660c090",
   },
   runtimeVersion: {
     policy: "appVersion",
