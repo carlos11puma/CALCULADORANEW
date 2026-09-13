@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "App móvil (Expo + React Native + TypeScript) de Calculadora de Comisiones — consume los 6 contratos de @calculadora-comisiones/api-contract; app del vendedor (V1-V6) y panel del administrador (A1-A5).",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
