@@ -105,7 +105,10 @@ jobs:
         working-directory: packages/mobile-app
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx eas-cli@13 build --profile preview --non-interactive --no-wait
+        # Solo Android (decisión de Carlos, 2026-09-13): compilar iOS requiere una cuenta de
+        # Apple Developer Program paga (USD 99/año), fuera del presupuesto gratuito afirmado
+        # en project.md § Mandated. Los ~26 vendedores usan dispositivos Android.
+        run: npx eas-cli@13 build --profile preview --platform android --non-interactive --no-wait
 
   # Etapa "Aprobación manual antes de producción" de cicd-pipeline.md — el GitHub Environment
   # `production` (configurado en Settings → Environments con "required reviewer": Carlos)
@@ -154,4 +157,5 @@ jobs:
         working-directory: packages/mobile-app
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx eas-cli@13 build --profile production --non-interactive --no-wait
+        # Solo Android (decisión de Carlos, 2026-09-13) — ver nota en el job publish-preview.
+        run: npx eas-cli@13 build --profile production --platform android --non-interactive --no-wait
