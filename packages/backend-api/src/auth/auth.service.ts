@@ -37,19 +37,27 @@ export class AuthService {
   }
 
   async loginSupervisor(pin: string): Promise<LoginResult> {
-    const user = await this.authRepository.findActiveSupervisorByPin(pin);
+    // Fix (Deployment Execution, 260909, noveno hallazgo): un hash bcrypt no se puede
+    // filtrar por igualdad en SQL contra el texto plano, así que se traen todos los
+    // supervisores activos con PIN cargado y se compara cada hash con bcrypt aquí —
+    // antes la consulta al repositorio ya descartaba a todos por comparar texto plano
+    // contra hash directamente en el WHERE.
+    const supervisors = await this.authRepository.findActiveSupervisors();
 
-    if (!user || !user.pin) {
+    let matchedUser: (typeof supervisors)[number] | null = null;
+    for (const supervisor of supervisors) {
+      if (supervisor.pin && (await bcrypt.compare(pin, supervisor.pin))) {
+        matchedUser = supervisor;
+        break;
+      }
+    }
+
+    if (!matchedUser) {
       throw new UnauthorizedException({ code: "UNAUTHORIZED", message: "PIN inválido" });
     }
 
-    const matches = await bcrypt.compare(pin, user.pin);
-    if (!matches) {
-      throw new UnauthorizedException({ code: "UNAUTHORIZED", message: "PIN inválido" });
-    }
-
-    const session = await this.authRepository.createSession(user.id);
-    return { token: session.token, userId: user.id, role: "supervisor" };
+    const session = await this.authRepository.createSession(matchedUser.id);
+    return { token: session.token, userId: matchedUser.id, role: "supervisor" };
   }
 
   async logout(token: string): Promise<void> {

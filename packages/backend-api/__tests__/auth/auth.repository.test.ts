@@ -26,11 +26,11 @@ describe("AuthRepository", () => {
     expect(result).toBeNull();
   });
 
-  it("busca un supervisor activo por pin", async () => {
-    prisma.user.findFirst.mockResolvedValue(supervisorUser);
-    const result = await repository.findActiveSupervisorByPin("1234");
-    expect(result).toEqual(supervisorUser);
-    expect(prisma.user.findFirst).toHaveBeenCalledWith({ where: { pin: "1234", role: "supervisor", active: true } });
+  it("busca los supervisores activos con pin cargado (sin filtrar por el pin en texto plano — es un hash bcrypt)", async () => {
+    prisma.user.findMany.mockResolvedValue([supervisorUser]);
+    const result = await repository.findActiveSupervisors();
+    expect(result).toEqual([supervisorUser]);
+    expect(prisma.user.findMany).toHaveBeenCalledWith({ where: { role: "supervisor", active: true, pin: { not: null } } });
   });
 
   it("crea una Session con expiresAt null (BR1.4/BR1.5)", async () => {

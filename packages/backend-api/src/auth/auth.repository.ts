@@ -13,8 +13,19 @@ export class AuthRepository {
     return this.prisma.user.findFirst({ where: { username, role: "vendedor" } });
   }
 
-  findActiveSupervisorByPin(pin: string): Promise<User | null> {
-    return this.prisma.user.findFirst({ where: { pin, role: "supervisor", active: true } });
+  /**
+   * Fix (Deployment Execution, 260909, noveno hallazgo): antes esta consulta filtraba
+   * `where: { pin, role: "supervisor", active: true }`, comparando el PIN en texto plano
+   * recibido en el login contra la columna `pin`, que guarda un HASH bcrypt — esa
+   * comparación nunca puede coincidir (bcrypt genera un hash distinto en cada `hash()`,
+   * incluso para el mismo texto), así que el login de supervisor era imposible con
+   * cualquier PIN. Ningún test lo detectó porque todos mockean el repositorio o el
+   * AuthService, sin ejercitar la consulta real contra un hash real. Ahora se traen los
+   * supervisores activos con PIN cargado y se compara cada uno con bcrypt en el
+   * servicio (auth.service.ts), igual que ya se hace para la contraseña del vendedor.
+   */
+  findActiveSupervisors(): Promise<User[]> {
+    return this.prisma.user.findMany({ where: { role: "supervisor", active: true, pin: { not: null } } });
   }
 
   createSession(userId: string): Promise<Session> {

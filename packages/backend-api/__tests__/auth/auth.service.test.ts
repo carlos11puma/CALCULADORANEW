@@ -11,13 +11,13 @@ vi.mock("bcrypt", () => ({
 }));
 
 describe("AuthService", () => {
-  let repository: { findVendedorByUsername: any; findActiveSupervisorByPin: any; createSession: any; findSessionByToken: any; revokeSession: any };
+  let repository: { findVendedorByUsername: any; findActiveSupervisors: any; createSession: any; findSessionByToken: any; revokeSession: any };
   let service: AuthService;
 
   beforeEach(() => {
     repository = {
       findVendedorByUsername: vi.fn(),
-      findActiveSupervisorByPin: vi.fn(),
+      findActiveSupervisors: vi.fn(),
       createSession: vi.fn(),
       findSessionByToken: vi.fn(),
       revokeSession: vi.fn(),
@@ -52,8 +52,8 @@ describe("AuthService", () => {
     await expect(service.loginVendedor("juan.perez", "secret")).rejects.toThrow(UnauthorizedException);
   });
 
-  it("W2 — login de supervisor exitoso", async () => {
-    repository.findActiveSupervisorByPin.mockResolvedValue(supervisorUser);
+  it("W2 — login de supervisor exitoso (compara el PIN contra el hash con bcrypt, no en la consulta SQL)", async () => {
+    repository.findActiveSupervisors.mockResolvedValue([supervisorUser]);
     (bcrypt.compare as any).mockResolvedValue(true);
     repository.createSession.mockResolvedValue({ token: "tok2", userId: supervisorUser.id, expiresAt: null });
 
@@ -62,8 +62,14 @@ describe("AuthService", () => {
     expect(result).toEqual({ token: "tok2", userId: supervisorUser.id, role: "supervisor" });
   });
 
-  it("W2 — 401 cuando el PIN no coincide con ningún supervisor", async () => {
-    repository.findActiveSupervisorByPin.mockResolvedValue(null);
+  it("W2 — 401 cuando el PIN no coincide con ningún supervisor activo", async () => {
+    repository.findActiveSupervisors.mockResolvedValue([supervisorUser]);
+    (bcrypt.compare as any).mockResolvedValue(false);
+    await expect(service.loginSupervisor("0000")).rejects.toThrow(UnauthorizedException);
+  });
+
+  it("W2 — 401 cuando no hay ningún supervisor activo con PIN cargado", async () => {
+    repository.findActiveSupervisors.mockResolvedValue([]);
     await expect(service.loginSupervisor("0000")).rejects.toThrow(UnauthorizedException);
   });
 
