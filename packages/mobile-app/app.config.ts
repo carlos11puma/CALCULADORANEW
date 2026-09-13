@@ -38,7 +38,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       projectId: process.env.EAS_PROJECT_ID ?? "00000000-0000-0000-0000-000000000000",
     },
   },
-  plugins: ["expo-notifications", "expo-secure-store", "expo-sqlite"],
+  // "expo-sqlite" se sacó de esta lista (2026-09-13): solo hace falta declararlo como plugin
+  // para el soporte de SQLite en web (WASM), que este proyecto no usa (solo Android — ver
+  // operation/deployment-pipeline/decision-plataforma-android.md). Declarado, `expo config`
+  // intenta cargarlo fuera de Metro y falla al resolver un archivo con variantes por
+  // plataforma (`SQLiteDatabase.ios.ts`/`.android.ts`/`.web.ts`), rompiendo `eas build` en
+  // modo no interactivo. El uso en runtime de expo-sqlite (pendingSalesDb.ts) no depende de
+  // este plugin — sigue funcionando igual sin declararlo.
+  plugins: ["expo-notifications", "expo-secure-store"],
   updates: {
     // Canal resuelto por perfil de EAS Build / EAS Update (cicd-pipeline.md).
     url: "https://u.expo.dev/00000000-0000-0000-0000-000000000000",
@@ -47,4 +54,3 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     policy: "appVersion",
   },
 });
-// trigger CI
