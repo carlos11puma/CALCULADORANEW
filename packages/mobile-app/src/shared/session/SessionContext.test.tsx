@@ -42,15 +42,24 @@ describe("SessionContext", () => {
     jest.clearAllMocks();
   });
 
-  it("inicia en loading y pasa a ready sin sesión previa", async () => {
-    const { getByTestId } = render(
-      <SessionProvider>
-        <Probe />
-      </SessionProvider>,
-    );
-    await waitFor(() => expect(getByTestId("status").props.children).toBe("ready"));
-    expect(getByTestId("role").props.children).toBe("none");
-  });
+  it(
+    "inicia en loading y pasa a ready sin sesión previa",
+    async () => {
+      const { getByTestId } = render(
+        <SessionProvider>
+          <Probe />
+        </SessionProvider>,
+      );
+      // Timeout ampliado (default 5000ms -> 15000ms): el runner de GitHub Actions puede tardar
+      // más que una máquina local en resolver el efecto de montaje inicial, sobre todo corriendo
+      // con --coverage. No es un cambio de comportamiento de la app, solo tolerancia del test.
+      await waitFor(() => expect(getByTestId("status").props.children).toBe("ready"), {
+        timeout: 15000,
+      });
+      expect(getByTestId("role").props.children).toBe("none");
+    },
+    15000,
+  );
 
   it("login guarda la sesión y logout la borra (best-effort, MW3)", async () => {
     (authApi.logout as jest.Mock).mockResolvedValue(undefined);
