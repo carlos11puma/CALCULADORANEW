@@ -47,3 +47,4 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     policy: "appVersion",
   },
 });
+// trigger CI
