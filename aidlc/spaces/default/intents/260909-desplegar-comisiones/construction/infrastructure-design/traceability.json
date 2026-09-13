@@ -1,0 +1,86 @@
+{
+  "unit": "deployment",
+  "stage": "infrastructure-design",
+  "coverage": [
+    {
+      "id": "NFR-D4",
+      "source": "nfr-requirements/security-requirements.md",
+      "design": "nfr-design/security-design.md (dos Environments con secretos propios)",
+      "resource": "GitHub Environments `staging`/`production`; render.yaml dos servicios",
+      "artifact": "infrastructure-specification.md",
+      "status": "Covered"
+    },
+    {
+      "id": "NFR-D6",
+      "source": "nfr-requirements/security-requirements.md",
+      "design": "nfr-design/security-design.md (RBAC de infraestructura)",
+      "resource": "Rol de Postgres dedicado en Neon `main`; acceso Render Member/Admin limitado a Carlos",
+      "artifact": "infrastructure-specification.md",
+      "status": "Covered"
+    },
+    {
+      "id": "NFR-D15",
+      "source": "nfr-requirements/security-requirements.md",
+      "design": "nfr-design/security-design.md (TLS)",
+      "resource": "HTTPS por defecto de Render; sslmode=require por defecto de Neon",
+      "artifact": "infrastructure-specification.md",
+      "status": "Covered"
+    },
+    {
+      "id": "NFR-D16",
+      "source": "nfr-requirements/security-requirements.md",
+      "design": "nfr-design/security-design.md (diferido)",
+      "resource": "N/A — sin cambio de infraestructura, guard no desplegado",
+      "artifact": "N/A",
+      "status": "N/A"
+    },
+    {
+      "id": "NFR-D17",
+      "source": "nfr-requirements/security-requirements.md",
+      "design": "nfr-design/security-design.md (gate de CI bloqueante)",
+      "resource": "dependency-audit.yml como required status check en branch protection de `main`",
+      "artifact": "cicd-pipeline.md § Resolución 2",
+      "status": "Covered"
+    },
+    {
+      "id": "render.yaml-gap",
+      "source": "nfr-design § Review R-01 (contributions/aidlc-aws-platform-agent.md)",
+      "design": "Dos entradas de servicio en render.yaml",
+      "resource": "render.yaml (backend-api-staging, backend-api-production)",
+      "artifact": "infrastructure-specification.md § Resolución concreta del desfase de render.yaml",
+      "status": "Covered"
+    },
+    {
+      "id": "mobile-app-ci-staging-env-gap",
+      "source": "Hallazgo nuevo de esta etapa (auditoría de workflows reales)",
+      "design": "environment: staging en el job publish-preview",
+      "resource": "mobile-app-ci.yml",
+      "artifact": "cicd-pipeline.md § Resolución 3",
+      "status": "Covered"
+    },
+    {
+      "id": "team.md-DEP1-DEP2",
+      "source": "team.md §2 (titularidad y mapeo de ambientes)",
+      "design": "Tabla de mapeo Render/Neon/EAS ya afirmada",
+      "resource": "backend-api-staging/production, ramas staging/main, canales preview/production",
+      "artifact": "infrastructure-specification.md § Deployment",
+      "status": "Covered"
+    },
+    {
+      "id": "team.md-DEP3",
+      "source": "team.md §3 (secretos separados por ambiente)",
+      "design": "Dos GitHub Environments con secretos propios",
+      "resource": "Environment staging (sin required reviewer), Environment production (required reviewer = Carlos)",
+      "artifact": "cicd-pipeline.md § Pipeline resultante",
+      "status": "Covered"
+    },
+    {
+      "id": "observability-design-bridge",
+      "source": "nfr-design/observability-design.md",
+      "design": "Notificaciones nativas, sin plataforma nueva",
+      "resource": "Render deploy-failed email, GitHub Actions email nativo",
+      "artifact": "monitoring-design.md",
+      "status": "Covered"
+    }
+  ]
+}

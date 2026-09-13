@@ -1,0 +1,17 @@
+{
+  "stage": "nfr-design",
+  "unit": "mobile-app",
+  "upstream_ids": ["NFR1.1", "NFR1.5", "NFR1.6", "NFR1.7", "NFR3.14", "NFR3.15", "NFR3.16", "NFR3.17", "NFR4.3", "NFR4.4"],
+  "coverage": [
+    { "id": "NFR1.1", "status": "N/A", "target": "id de backend-api (mencionado en prosa en performance-requirements.md como contexto del presupuesto de <2s de extremo a extremo) — no es un id propio de mobile-app" },
+    { "id": "NFR1.5", "status": "OK", "target": "performance-design.md § Feedback optimista" },
+    { "id": "NFR1.6", "status": "OK", "target": "performance-design.md § Estados de carga" },
+    { "id": "NFR1.7", "status": "OK", "target": "performance-design.md § Transformaciones en cliente" },
+    { "id": "NFR3.14", "status": "OK", "target": "security-design.md § Enforcement de HTTPS" },
+    { "id": "NFR3.15", "status": "OK", "target": "security-design.md § Sin certificate pinning" },
+    { "id": "NFR3.16", "status": "OK", "target": "security-design.md § Almacenamiento de sesión" },
+    { "id": "NFR3.17", "status": "OK", "target": "security-design.md § Cliente HTTP e interceptores (ningún log de credenciales/token)" },
+    { "id": "NFR4.3", "status": "N/A", "target": "decisión ya tomada en nfr-requirements (cifrado de SO, sin capa adicional) — no requiere diseño técnico propio más allá de no agregar dependencia" },
+    { "id": "NFR4.4", "status": "OK", "target": "logical-components.md § shared/storage/pendingSalesDb (la sincronización delega en la idempotencia del servidor)" }
+  ]
+}

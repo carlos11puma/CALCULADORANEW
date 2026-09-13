@@ -1,0 +1,31 @@
+name: api-contract CI
+
+# Etapa "Build + Test" para api-contract (paquete de contratos/tipos compartidos).
+# Antes de esta etapa (ci-pipeline, Construction), api-contract solo se validaba
+# indirectamente al fallar el build de backend-api o mobile-app — decisión afirmada con
+# Carlos Puma: darle su propio workflow, ya que un cambio roto en el contrato debe fallar
+# aquí mismo, no solo como efecto colateral en otra unidad.
+
+on:
+  pull_request:
+    paths:
+      - "packages/api-contract/**"
+  push:
+    branches: [main]
+    paths:
+      - "packages/api-contract/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      # Piso de cobertura 80% líneas/statements/funciones, 70% branches ya declarado en
+      # vitest.config.ts (team.md § Testing Posture) — --coverage lo aplica de verdad en CI
+      # (infrastructure-design/../ci-pipeline/ci-config.md § Cambio concreto: agregar --coverage).
+      - run: npm test --workspace=packages/api-contract -- --coverage
+      - run: npm run build --workspace=packages/api-contract

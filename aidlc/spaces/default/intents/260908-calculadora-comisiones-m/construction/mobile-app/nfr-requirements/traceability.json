@@ -1,0 +1,14 @@
+{
+  "stage": "nfr-requirements",
+  "unit": "mobile-app",
+  "upstream_ids": ["NFR1", "NFR2", "NFR3", "NFR4", "NFR5", "NFR6", "NFR7"],
+  "coverage": [
+    { "id": "NFR1", "status": "OK", "target": "performance-requirements.md (NFR1.5-NFR1.7)" },
+    { "id": "NFR2", "status": "N/A", "target": "métrica de adopción (% de rutas activas registrando venta diaria) — sin mecanismo de instrumentación definido en ninguna etapa previa; no es una decisión de stack o de requisito no-funcional propia de mobile-app" },
+    { "id": "NFR3", "status": "OK", "target": "security-requirements.md (NFR3.14-NFR3.17)" },
+    { "id": "NFR4", "status": "OK", "target": "security-requirements.md (NFR4.3-NFR4.4)" },
+    { "id": "NFR5", "status": "OK", "target": "tech-stack-decisions.md (compatibilidad Android 8+/iOS 13+)" },
+    { "id": "NFR6", "status": "OK", "target": "tech-stack-decisions.md (Expo/EAS free tier)" },
+    { "id": "NFR7", "status": "N/A", "target": "escalabilidad del modelo de datos para múltiples supervisores — responsabilidad exclusiva de backend-api, sin decisión de stack propia en mobile-app" }
+  ]
+}

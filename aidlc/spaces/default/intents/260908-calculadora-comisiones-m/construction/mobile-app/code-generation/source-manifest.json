@@ -1,0 +1,322 @@
+{
+  "stage": "code-generation",
+  "unit": "mobile-app",
+  "version": 1,
+  "writes": [
+    {
+      "path": "packages/mobile-app/App.tsx"
+    },
+    {
+      "path": "packages/mobile-app/README.md"
+    },
+    {
+      "path": "packages/mobile-app/app.config.ts"
+    },
+    {
+      "path": "packages/mobile-app/babel.config.js"
+    },
+    {
+      "path": "packages/mobile-app/eas.json"
+    },
+    {
+      "path": "packages/mobile-app/jest.config.js"
+    },
+    {
+      "path": "packages/mobile-app/jest.setup.ts"
+    },
+    {
+      "path": "packages/mobile-app/package.json"
+    },
+    {
+      "path": "packages/mobile-app/src/app/index.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/app/navigation/AdminTabs/index.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/app/navigation/AuthStack/index.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/app/navigation/RootNavigator/index.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/app/navigation/VendorTabs/index.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/SupervisorLoginScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/SupervisorLoginScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/VendorLoginScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/VendorLoginScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/auth/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/HistoryScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/HistoryScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/history/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/HomeScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/HomeScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/returnRateTrend.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/home/returnRateTrend.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/manual-notification/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/NotificationsScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/NotificationsScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/grouping.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/grouping.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/notifications/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/BudgetsScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/BudgetsScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/RosterScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/RosterScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/roster/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/syncEngine.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/syncEngine.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/useAutoSync.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/sales-entry/useAutoSync.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/TiersScreen.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/TiersScreen.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/api.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/api.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/hooks.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/features/tiers/hooks.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/__fixtures__/expoSqliteMock.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/__fixtures__/queryTestUtils.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/api/apiClient.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/api/apiClient.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/api/contractTypes.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ConfirmDialog.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ConfirmDialog.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ErrorBanner.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ErrorBanner.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/OfflineBanner.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/OfflineBanner.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/PrimaryButton.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/PrimaryButton.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/SessionGate.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/SessionGate.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/Skeletons.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/Skeletons.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/SyncStatusIcon.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/SyncStatusIcon.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ValidatedTextInput.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/components/ValidatedTextInput.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/net/connectivity.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/net/connectivity.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/session/SessionContext.test.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/session/SessionContext.tsx"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/storage/pendingSalesDb.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/storage/pendingSalesDb.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/storage/secureSession.test.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/storage/secureSession.ts"
+    },
+    {
+      "path": "packages/mobile-app/src/shared/theme.ts"
+    },
+    {
+      "path": "packages/mobile-app/tsconfig.json"
+    },
+    {
+      "path": ".github/workflows/mobile-app-ci.yml"
+    }
+  ]
+}

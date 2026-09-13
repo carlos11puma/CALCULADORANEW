@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: Fixture inválido — referencia rota
+  version: "1.0"
+paths:
+  /vendors:
+    get:
+      operationId: listVendors
+      tags: [VendorDirectory]
+      responses:
+        "200":
+          description: Lista de vendedores
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/NoExiste" }
+components:
+  schemas: {}

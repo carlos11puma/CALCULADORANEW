@@ -1,0 +1,11 @@
+{
+  "name": "calculadora-comisiones",
+  "private": true,
+  "description": "Calculadora de comisiones — monorepo (api-contract, backend-api, mobile-app).",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm test --workspaces --if-present"
+  }
+}

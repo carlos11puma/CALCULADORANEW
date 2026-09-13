@@ -1,0 +1,16 @@
+[
+  {
+    "uuid": "01a07f48-4fbb-7652-b080-fb6ce71c95a1",
+    "slug": "calculadora-comisiones-m",
+    "dirName": "260908-calculadora-comisiones-m",
+    "scope": "mvp",
+    "status": "complete"
+  },
+  {
+    "uuid": "01a083d1-b842-7cd5-a544-086ad74f188a",
+    "slug": "desplegar-comisiones",
+    "dirName": "260909-desplegar-comisiones",
+    "scope": "infra",
+    "status": "in-flight"
+  }
+]

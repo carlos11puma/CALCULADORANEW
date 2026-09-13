@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "revision": 21,
+  "project_sha256": "7d31bb0925a8ebe3f027cc8a8044ac84476ffc1843825ff3fbbde4f3651f530f",
+  "intent_uuid": "01a083d1-b842-7cd5-a544-086ad74f188a",
+  "state_present": true,
+  "state_sha256": "aa03a5f66ded0d1dc41038d8b02428700c28d13f26dbed6cd3e52bba48e1a88e",
+  "cursor_harness": "claude",
+  "owner_session": "sessionless:7d31bb0925a8ebe3",
+  "owner_epoch": 0,
+  "context_epoch": 0,
+  "kind": "run-stage",
+  "stage": "infrastructure-design",
+  "delivery": "issued",
+  "needs_rehydrate": false,
+  "active_attempt": {
+    "id": "sessionless",
+    "command_kind": "next",
+    "command_sha256": "b014e11d9bd52d497000b985c6917d7aabadd9a92d6463a865fdc7525f584d0a",
+    "issued_state_sha256": "b014e11d9bd52d497000b985c6917d7aabadd9a92d6463a865fdc7525f584d0a",
+    "session_id": "sessionless:7d31bb0925a8ebe3",
+    "owner_epoch": 0,
+    "context_epoch": 0,
+    "status": "settled"
+  },
+  "event_sequence": 0,
+  "human_sequence": 0,
+  "engine_sequence": 0,
+  "conversation_sequence": 0,
+  "stop_count": 0
+}

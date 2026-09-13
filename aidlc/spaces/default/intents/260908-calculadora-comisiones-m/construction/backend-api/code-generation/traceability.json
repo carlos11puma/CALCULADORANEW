@@ -1,0 +1,723 @@
+{
+  "stage": "code-generation",
+  "unit": "backend-api",
+  "upstream_ids": [
+    "AC1.1.1",
+    "AC1.1.2",
+    "AC1.1.3",
+    "AC1.2.1",
+    "AC1.3.1",
+    "AC1.3.2",
+    "AC1.4.1",
+    "AC2.1.1",
+    "AC2.1.2",
+    "AC2.2.1",
+    "AC2.2.2",
+    "AC2.3.1",
+    "AC2.3.2",
+    "AC3.1.1",
+    "AC3.1.2",
+    "AC3.2.1",
+    "AC3.2.2",
+    "AC3.3.1",
+    "AC3.3.2",
+    "AC3.3.3",
+    "AC3.3.4",
+    "AC4.1.1",
+    "AC4.2.1",
+    "AC5.1.1",
+    "AC5.2.1",
+    "AC5.3.1",
+    "AC6.1.1",
+    "AC7.1.1",
+    "AC7.1.2",
+    "AC7.1.3",
+    "AC8.1.1",
+    "AC8.2.1",
+    "AC8.2.2",
+    "AC8.3.1",
+    "AC8.3.2",
+    "AC9.1.1",
+    "AC9.1.2",
+    "AC9.1.3",
+    "BR1.1",
+    "BR1.3",
+    "BR1.4",
+    "BR1.5",
+    "BR2.1",
+    "BR2.3",
+    "BR3.1",
+    "BR3.3",
+    "BR3.4",
+    "BR3.5",
+    "BR4.1",
+    "BR4.2",
+    "BR4.3",
+    "BR4.4",
+    "BR4.5",
+    "BR6.1",
+    "BR7.1",
+    "BR7.2",
+    "BR8.1",
+    "BR8.2",
+    "BR8.3",
+    "BR9.1",
+    "BR9.2",
+    "NFR1.1",
+    "NFR1.2",
+    "NFR1.3",
+    "NFR1.4",
+    "NFR3.1",
+    "NFR3.2",
+    "NFR3.6",
+    "NFR3.7",
+    "NFR3.8",
+    "NFR3.9",
+    "NFR3.10",
+    "NFR3.11",
+    "NFR3.12",
+    "NFR3.13",
+    "NFR4.1",
+    "NFR4.2",
+    "NFR6.1",
+    "NFR6.2",
+    "NFR6.3",
+    "NFR6.4",
+    "NFR6.5",
+    "NFR7.1",
+    "NFR7.2",
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5",
+    "W6",
+    "W7",
+    "W8",
+    "W9",
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "R-01",
+    "R-02"
+  ],
+  "coverage": [
+    {
+      "id": "AC1.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "loginVendedor — probado en __tests__/auth/auth.service.test.ts, __tests__/integration/auth.integration.test.ts"
+    },
+    {
+      "id": "AC1.1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "loginVendedor rechaza credenciales inválidas con 401"
+    },
+    {
+      "id": "AC1.1.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.repository.ts",
+      "notes": "createSession con expiresAt:null (BR1.4)"
+    },
+    {
+      "id": "AC1.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "logout — revoca la Session"
+    },
+    {
+      "id": "AC1.3.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "loginSupervisor con PIN correcto"
+    },
+    {
+      "id": "AC1.3.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "loginSupervisor rechaza PIN incorrecto con 401"
+    },
+    {
+      "id": "AC1.4.1",
+      "status": "N/A",
+      "target": "prisma/schema.prisma",
+      "notes": "decisión de esquema (User.role sin cardinalidad fija para supervisor), sin código de comportamiento propio distinto"
+    },
+    {
+      "id": "AC2.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/vendor-directory/vendor-directory.service.ts",
+      "notes": "creación de Vendor/User (W4)"
+    },
+    {
+      "id": "AC2.1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/vendor-directory/vendor-directory.service.ts",
+      "notes": "edición dispara BR4.4 si budget o channel cambian (R-01)"
+    },
+    {
+      "id": "AC2.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "budgetProgress y umbrales usan Vendor.budget"
+    },
+    {
+      "id": "AC2.2.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/vendor-directory/dto/vendor-input.dto.ts",
+      "notes": "class-validator rechaza budget negativo/vacío"
+    },
+    {
+      "id": "AC2.3.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.service.ts",
+      "notes": "tramos usados en resolveApplicableTier y oportunidad de ganancia"
+    },
+    {
+      "id": "AC2.3.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.service.ts",
+      "notes": "replaceTiers acepta con warning TIER_ORDER_WARNING, no rechaza"
+    },
+    {
+      "id": "AC3.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "recordSale, recalculo disparado en el mismo request"
+    },
+    {
+      "id": "AC3.1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/dto/daily-sale-input.dto.ts",
+      "notes": "class-validator rechaza amount/returns negativos o vacíos"
+    },
+    {
+      "id": "AC3.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "recordSale actualiza DailySale existente no cerrado"
+    },
+    {
+      "id": "AC3.2.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "rechaza con 409 si closed=true"
+    },
+    {
+      "id": "AC3.3.1",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "responsabilidad de mobile-app (persistencia local sin conexión) — fuera del alcance de backend-api"
+    },
+    {
+      "id": "AC3.3.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "syncBatch, idempotente por (vendorId, saleDate) — BR3.4/BR3.5"
+    },
+    {
+      "id": "AC3.3.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "syncBatch procesa cada ítem del lote de forma independiente"
+    },
+    {
+      "id": "AC3.3.4",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "responsabilidad de mobile-app (detección de fallo de red del cliente); el backend ya garantiza idempotencia (BR3.3)"
+    },
+    {
+      "id": "AC4.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "recalculateForVendor determina tramo y calcula comisión"
+    },
+    {
+      "id": "AC4.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "closeOverduePeriods fija venta/comisión del mes"
+    },
+    {
+      "id": "AC5.1.1",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "responsabilidad de mobile-app (presentación en pantalla) — backend-api solo expone el dato vía W8"
+    },
+    {
+      "id": "AC5.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.controller.ts",
+      "notes": "getCurrent expone accumulatedSales, budget y budgetProgress"
+    },
+    {
+      "id": "AC5.3.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "recalculo inmediato en W6/W7 garantiza tiempo real"
+    },
+    {
+      "id": "AC6.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.repository.ts",
+      "notes": "findHistory: solo closed=true, más recientes primero"
+    },
+    {
+      "id": "AC7.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateSalesThresholds"
+    },
+    {
+      "id": "AC7.1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.repository.ts",
+      "notes": "existsForPeriod previene reenvío"
+    },
+    {
+      "id": "AC7.1.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "recalculo tras editar budget re-evalúa umbrales sin reenviar los ya notificados"
+    },
+    {
+      "id": "AC8.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "returnRate recalculado, 0 si accumulatedSales=0"
+    },
+    {
+      "id": "AC8.2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateReturnThresholds"
+    },
+    {
+      "id": "AC8.2.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "no reenvía umbral ya notificado (mismo mecanismo que BR7.2)"
+    },
+    {
+      "id": "AC8.3.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "buildEarningOpportunity incluido en la notificación"
+    },
+    {
+      "id": "AC8.3.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.service.ts",
+      "notes": "siguiente tramo mejor determinístico cuando en orden"
+    },
+    {
+      "id": "AC9.1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "sendManual con lista explícita de vendorId"
+    },
+    {
+      "id": "AC9.1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "sendManual con recipients=all"
+    },
+    {
+      "id": "AC9.1.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/dto/manual-notification.dto.ts",
+      "notes": "class-validator rechaza mensaje vacío"
+    },
+    {
+      "id": "BR1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/auth.guard.ts",
+      "notes": "todo endpoint protegido exige sesión válida"
+    },
+    {
+      "id": "BR1.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/roles.guard.ts",
+      "notes": "aplicado a notification.controller.ts (envío manual exige supervisor)"
+    },
+    {
+      "id": "BR1.4",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.repository.ts",
+      "notes": "createSession, expiresAt:null"
+    },
+    {
+      "id": "BR1.5",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "loginSupervisor, mismo comportamiento sin expiración"
+    },
+    {
+      "id": "BR2.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/vendor-directory/dto/vendor-input.dto.ts",
+      "notes": "budget positivo mayor a cero"
+    },
+    {
+      "id": "BR2.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.service.ts",
+      "notes": "tramos fuera de orden se aceptan con warning"
+    },
+    {
+      "id": "BR3.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/dto/daily-sale-input.dto.ts",
+      "notes": "amount/returns no negativos"
+    },
+    {
+      "id": "BR3.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "idempotencia por (vendorId, saleDate)"
+    },
+    {
+      "id": "BR3.4",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "isDateInClosedPeriod, consumido por sales-entry.service.ts"
+    },
+    {
+      "id": "BR3.5",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "última escritura gana, sin detección de conflicto"
+    },
+    {
+      "id": "BR4.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "métrica por canal (TIER_TYPE_BY_CHANNEL)"
+    },
+    {
+      "id": "BR4.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.service.ts",
+      "notes": "resolveApplicableTier"
+    },
+    {
+      "id": "BR4.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "commissionEarned = accumulatedSales × tasa del tramo"
+    },
+    {
+      "id": "BR4.4",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "recalculateForVendor/recalculateAllForChannel — recalculo completo, nunca incremental"
+    },
+    {
+      "id": "BR4.5",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "closeOverduePeriods, @Cron EVERY_DAY_AT_1AM"
+    },
+    {
+      "id": "BR6.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.repository.ts",
+      "notes": "findHistory"
+    },
+    {
+      "id": "BR7.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateSalesThresholds"
+    },
+    {
+      "id": "BR7.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.repository.ts",
+      "notes": "existsForPeriod"
+    },
+    {
+      "id": "BR8.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "returnRate=0 si accumulatedSales=0"
+    },
+    {
+      "id": "BR8.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateReturnThresholds"
+    },
+    {
+      "id": "BR8.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "buildEarningOpportunity, solo si inOrder"
+    },
+    {
+      "id": "BR9.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/dto/manual-notification.dto.ts",
+      "notes": "mensaje no vacío y al menos un destinatario válido"
+    },
+    {
+      "id": "BR9.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "sendManual, resolución de destinatarios"
+    },
+    {
+      "id": "NFR1.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.controller.ts",
+      "notes": "POST /sales responde con el recálculo ya aplicado"
+    },
+    {
+      "id": "NFR1.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "recalculo en una transacción Prisma"
+    },
+    {
+      "id": "NFR1.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.controller.ts",
+      "notes": "getCurrent, lectura indexada sin caché"
+    },
+    {
+      "id": "NFR1.4",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.service.ts",
+      "notes": "syncBatch, procesamiento secuencial"
+    },
+    {
+      "id": "NFR3.1",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract (continuación de numeración) — su diseño/implementación de borde ya vive en api-contract"
+    },
+    {
+      "id": "NFR3.2",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract — no es un requisito propio de esta unidad"
+    },
+    {
+      "id": "NFR3.6",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract — no es un requisito propio de esta unidad"
+    },
+    {
+      "id": "NFR3.7",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract — no es un requisito propio de esta unidad"
+    },
+    {
+      "id": "NFR3.8",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract — no es un requisito propio de esta unidad"
+    },
+    {
+      "id": "NFR3.9",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.service.ts",
+      "notes": "bcrypt.hash costo 10, bcrypt.compare"
+    },
+    {
+      "id": "NFR3.10",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/auth.guard.ts",
+      "notes": "Session findUnique + include(user), un solo round-trip"
+    },
+    {
+      "id": "NFR3.11",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/roles.guard.ts",
+      "notes": "lee request.user.role ya resuelto por AuthGuard"
+    },
+    {
+      "id": "NFR3.12",
+      "status": "OK",
+      "target": "packages/backend-api/src/config/env.validation.ts",
+      "notes": "ConfigModule.forRoot({ validate }), fail-fast"
+    },
+    {
+      "id": "NFR3.13",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/interceptors/logging.interceptor.ts",
+      "notes": "nunca serializa el body completo ni credenciales"
+    },
+    {
+      "id": "NFR4.1",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "id de api-contract — no es un requisito propio de esta unidad"
+    },
+    {
+      "id": "NFR4.2",
+      "status": "OK",
+      "target": "packages/backend-api/prisma/schema.prisma",
+      "notes": "DailySale @@unique([vendorId, saleDate]); simulado con error P2002 en __tests__/sales-entry/sales-entry.repository.test.ts (no verificado contra Postgres real en este entorno, ver code-summary.md)"
+    },
+    {
+      "id": "NFR6.1",
+      "status": "OK",
+      "target": "packages/backend-api/src/prisma/prisma.service.ts",
+      "notes": "PrismaClient único compartido (Global module)"
+    },
+    {
+      "id": "NFR6.2",
+      "status": "OK",
+      "target": "packages/backend-api/src/health/health.controller.ts",
+      "notes": "GET /health (@nestjs/terminus)"
+    },
+    {
+      "id": "NFR6.3",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "closeOverduePeriods, cron diario con condición de estado idempotente"
+    },
+    {
+      "id": "NFR6.4",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "sin código propio — depende del point-in-time recovery por defecto de Neon"
+    },
+    {
+      "id": "NFR6.5",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "ausencia deliberada de circuit breaker/retry es una decisión de diseño, sin código adicional que agregar"
+    },
+    {
+      "id": "NFR7.1",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "decisión de esquema (prisma/schema.prisma), sin código de comportamiento distinto al ya cubierto por los guards"
+    },
+    {
+      "id": "NFR7.2",
+      "status": "N/A",
+      "target": "N/A",
+      "notes": "decisión de sizing de infraestructura (Render/Neon free tier), sin código propio de esta unidad"
+    },
+    {
+      "id": "W1",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.controller.ts",
+      "notes": "loginVendedor — __tests__/integration/auth.integration.test.ts"
+    },
+    {
+      "id": "W2",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.controller.ts",
+      "notes": "loginSupervisor — __tests__/integration/auth.integration.test.ts"
+    },
+    {
+      "id": "W3",
+      "status": "OK",
+      "target": "packages/backend-api/src/auth/auth.controller.ts",
+      "notes": "logout — __tests__/integration/auth.integration.test.ts"
+    },
+    {
+      "id": "W4",
+      "status": "OK",
+      "target": "packages/backend-api/src/vendor-directory/vendor-directory.controller.ts",
+      "notes": "__tests__/integration/vendor-directory.integration.test.ts"
+    },
+    {
+      "id": "W5",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-tier/commission-tier.controller.ts",
+      "notes": "__tests__/integration/commission-tier.integration.test.ts"
+    },
+    {
+      "id": "W6",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.controller.ts",
+      "notes": "recordSale — __tests__/integration/sales-entry.integration.test.ts"
+    },
+    {
+      "id": "W7",
+      "status": "OK",
+      "target": "packages/backend-api/src/sales-entry/sales-entry.controller.ts",
+      "notes": "syncSales — __tests__/integration/sales-entry.integration.test.ts"
+    },
+    {
+      "id": "W8",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.controller.ts",
+      "notes": "getCurrent — __tests__/integration/commission-ledger.integration.test.ts"
+    },
+    {
+      "id": "W9",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts",
+      "notes": "closeOverduePeriods — __tests__/commission-ledger/commission-ledger.service.test.ts"
+    },
+    {
+      "id": "W10",
+      "status": "OK",
+      "target": "packages/backend-api/src/commission-ledger/commission-ledger.controller.ts",
+      "notes": "getHistory — __tests__/integration/commission-ledger.integration.test.ts"
+    },
+    {
+      "id": "W11",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateSalesThresholds, invocado desde commission-ledger.service.ts"
+    },
+    {
+      "id": "W12",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.service.ts",
+      "notes": "evaluateReturnThresholds, invocado desde commission-ledger.service.ts"
+    },
+    {
+      "id": "W13",
+      "status": "OK",
+      "target": "packages/backend-api/src/notification/notification.controller.ts",
+      "notes": "sendManual — __tests__/integration/notification.integration.test.ts"
+    },
+    {
+      "id": "R-01",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/login-throttler.guard.ts",
+      "notes": "LoginThrottlerGuard, 5/min por IP+credencial, aplicado en auth.controller.ts"
+    },
+    {
+      "id": "R-02",
+      "status": "OK",
+      "target": "packages/backend-api/src/common/guards/auth.guard.ts",
+      "notes": "rechaza por revokedAt no nulo O !user.active en una sola consulta"
+    }
+  ],
+  "deviations": [
+    {
+      "topic": "Credenciales iniciales de Vendor (W4)",
+      "detail": "VendorInput del contrato (contract-summary.md Contrato 2) no incluye username/password. src/vendor-directory/vendor-directory.service.ts genera un username único a partir del nombre y una contraseña temporal aleatoria (hasheada) al crear un Vendor; no hay flujo de recuperación en este MVP (Q4), así que el supervisor comunica esa contraseña inicial fuera de banda."
+    },
+    {
+      "topic": "Definición operativa de 'tramos en orden' (ADR-003)",
+      "detail": "rules.md/entities.md no fijan la métrica exacta de 'mejor a peor beneficio'. Code Generation la define como: tramos ordenados por `order` ascendente están 'en orden' cuando `commissionRate` no aumenta a medida que `order` crece (documentado en src/commission-tier/commission-tier.service.ts)."
+    },
+    {
+      "topic": "R-01 de functional-spec.md (W4 paso 3 ampliado)",
+      "detail": "src/vendor-directory/vendor-directory.service.ts dispara BR4.4 cuando budget O channel cambian (no solo budget), siguiendo la corrección sugerida por el reviewer de functional-design."
+    },
+    {
+      "topic": "R-02 de functional-spec.md (BR3.5 cubre también el cruce W6 vs. W7)",
+      "detail": "src/sales-entry/sales-entry.service.ts usa la misma clave única (vendorId, saleDate) para W6 y W7 — la última escritura gana en ambos caminos, sin lógica separada, tal como documenta functional-spec.md."
+    },
+    {
+      "topic": "Cliente Prisma generado a mano en este entorno",
+      "detail": "node_modules/.prisma/client/{index,default}.{js,d.ts} fueron escritos a mano porque este entorno de generación de código no tuvo acceso de red a binaries.prisma.sh (bloqueado por política de proxy/allowlist). prisma/schema.prisma es la fuente de verdad real; antes de desplegar, correr `npx prisma generate` con acceso de red real para reemplazar el stub por el cliente auténtico — ver code-summary.md."
+    }
+  ]
+}

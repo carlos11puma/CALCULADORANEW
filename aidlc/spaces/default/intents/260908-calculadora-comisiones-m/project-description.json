@@ -1,0 +1,1 @@
+"Aplicación móvil de calculadora de comisiones para supervisores de ventas (TIOSA S.A. / Grupo Bimbo Ecuador): reemplaza la calculadora web actual de un solo archivo (roster de vendedores por ruta y canal preventa/autoventa, presupuestos, tramos de comisión variable, PIN de administrador) por una app móvil React Native con backend NestJS y base de datos PostgreSQL en Neon."

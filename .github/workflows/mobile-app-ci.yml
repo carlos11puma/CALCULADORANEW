@@ -1,0 +1,157 @@
+name: mobile-app CI
+
+# Implementa infrastructure-design/cicd-pipeline.md. Resuelve R-01 de su revisión: la lista
+# EXACTA de paths que cuentan como "cambio nativo" (dispara `eas build` en vez de `eas update`)
+# vive en el paso "Clasificar cambio" del job `publish`, con el patrón literal reproducido ahí.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/mobile-app/**"
+      - "packages/api-contract/**"
+  push:
+    branches: [main]
+    paths:
+      - "packages/mobile-app/**"
+      - "packages/api-contract/**"
+
+jobs:
+  # Etapa "Build + Lint + Test" de cicd-pipeline.md — check requerido de GitHub en cada PR
+  # (Settings → Branch protection); bloquea el merge a `main` si falla.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run build --workspace=packages/api-contract
+      - run: npm run typecheck --workspace=packages/mobile-app
+      # NOTA (desviación documentada, ver README.md § CI/CD): no hay paso `npm run lint` aquí
+      # porque este monorepo aún no tiene un archivo de configuración de ESLint en ningún
+      # workspace (ni siquiera backend-api, ver su propio .github/workflows/backend-api-ci.yml)
+      # — team.md § Code Style exige ESLint, pero su configuración real es trabajo pendiente
+      # fuera del alcance de esta unidad; `typecheck` sí corre y bloquea el merge.
+      - run: npm test --workspace=packages/mobile-app -- --coverage
+
+  # Etapas "Clasificación del cambio" + "Publicación automática a staging/preview" de
+  # cicd-pipeline.md — solo corre tras un push exitoso a `main` (no en pull_request).
+  publish-preview:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    # Scopea el secreto EXPO_TOKEN al Environment "staging" (nunca compartido con
+    # producción, team.md §3) — sin required reviewer, el despliegue a staging sigue
+    # siendo automático en cada push a main (operation/infrastructure-design/cicd-pipeline.md § Resolución 3).
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+
+      # Clasificar cambio (cierra R-01 de la revisión de cicd-pipeline.md): un push a `main`
+      # cuenta como "cambio nativo" — y por tanto dispara `eas build` en vez de `eas update` —
+      # si y solo si toca alguno de estos paths EXACTOS/patrones dentro de packages/mobile-app:
+      #   - app.json | app.config.ts | app.config.js   (configuración nativa de Expo)
+      #   - eas.json                                    (perfiles de build/canales de EAS)
+      #   - package.json                                (posibles nuevas dependencias nativas
+      #                                                    — se trata cualquier cambio a este
+      #                                                    archivo como nativo por precaución,
+      #                                                    ya que diferenciar "dependencia con
+      #                                                    código nativo" de "solo JS" requiere
+      #                                                    inspeccionar cada paquete)
+      #   - babel.config.js                             (puede afectar transforms nativos)
+      #   - android/** | ios/**                         (carpetas nativas si se expulsa del
+      #                                                    managed workflow en el futuro)
+      # Cualquier otro cambio dentro de packages/mobile-app (típicamente src/**/*.{ts,tsx}) se
+      # clasifica como "solo JS/TS" y usa `eas update` (OTA).
+      - name: Clasificar cambio (nativo vs. JS/TS)
+        id: classify
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.event.after }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            # Primer push del branch (o force-push sin `before` válido): trata como nativo,
+            # la opción segura cuando no se puede diffear con precisión.
+            echo "is_native=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED_FILES=$(git diff --name-only "$BASE" "$HEAD" -- packages/mobile-app)
+          echo "Archivos cambiados en packages/mobile-app:"
+          echo "$CHANGED_FILES"
+          NATIVE_PATTERN='^packages/mobile-app/(app\.json|app\.config\.(ts|js)|eas\.json|package\.json|babel\.config\.js|android/|ios/)'
+          if echo "$CHANGED_FILES" | grep -qE "$NATIVE_PATTERN"; then
+            echo "is_native=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_native=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar OTA a preview (eas update)
+        if: steps.classify.outputs.is_native == 'false'
+        working-directory: packages/mobile-app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli@13 update --branch preview --auto --non-interactive
+
+      - name: Publicar build nativo a preview (eas build)
+        if: steps.classify.outputs.is_native == 'true'
+        working-directory: packages/mobile-app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli@13 build --profile preview --non-interactive --no-wait
+
+  # Etapa "Aprobación manual antes de producción" de cicd-pipeline.md — el GitHub Environment
+  # `production` (configurado en Settings → Environments con "required reviewer": Carlos)
+  # pausa este job hasta su aprobación explícita, igual que backend-api.
+  publish-production:
+    needs: publish-preview
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+
+      - name: Clasificar cambio (nativo vs. JS/TS)
+        id: classify
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.event.after }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            echo "is_native=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED_FILES=$(git diff --name-only "$BASE" "$HEAD" -- packages/mobile-app)
+          NATIVE_PATTERN='^packages/mobile-app/(app\.json|app\.config\.(ts|js)|eas\.json|package\.json|babel\.config\.js|android/|ios/)'
+          if echo "$CHANGED_FILES" | grep -qE "$NATIVE_PATTERN"; then
+            echo "is_native=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_native=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar OTA a production (eas update)
+        if: steps.classify.outputs.is_native == 'false'
+        working-directory: packages/mobile-app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli@13 update --branch production --auto --non-interactive
+
+      - name: Publicar build nativo a production (eas build)
+        if: steps.classify.outputs.is_native == 'true'
+        working-directory: packages/mobile-app
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli@13 build --profile production --non-interactive --no-wait

@@ -1,0 +1,571 @@
+openapi: 3.0.3
+info:
+  title: Calculadora de Comisiones — API
+  version: "1.0"
+  description: >
+    Contrato consolidado de los 6 componentes de dominio (Auth, VendorDirectory,
+    CommissionTier, SalesEntry, CommissionLedger, Notification), fuente única de
+    verdad que backend-api implementa y mobile-app consume. Ver
+    `inception/contract-design/contract-summary.md` para las convenciones
+    transversales y la justificación de cada decisión de forma.
+servers:
+  - url: /api/v1
+    description: Base URL versionada — ver Contract Ownership Rules para la política de versionado.
+
+paths:
+  # --- Auth ---
+  /auth/login/vendedor:
+    post:
+      operationId: loginVendedor
+      summary: Login de vendedor (usuario/contraseña) — FR1.1
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string, format: password }
+      responses:
+        "200":
+          description: Sesión de larga duración iniciada (FR1.4)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LoginResponse" }
+        "401":
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /auth/login/supervisor:
+    post:
+      operationId: loginSupervisor
+      summary: Login de supervisor por PIN — FR1.3
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pin]
+              properties:
+                pin: { type: string }
+      responses:
+        "200":
+          description: Sesión de supervisor iniciada
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LoginResponse" }
+        "401":
+          description: PIN inválido
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /auth/logout:
+    post:
+      operationId: logout
+      summary: Cierre de sesión explícito — FR1.4 (BR1.1)
+      tags: [Auth]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204":
+          description: Sesión revocada
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # --- VendorDirectory ---
+  /vendors:
+    get:
+      operationId: listVendors
+      summary: Listar roster — FR2.1 (solo supervisor, BR1.2)
+      tags: [VendorDirectory]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Lista de vendedores
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Vendor" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "403":
+          description: Rol no es supervisor (BR1.2)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    post:
+      operationId: createVendor
+      summary: Crear vendedor con presupuesto — FR2.1, FR2.2 (BR1.2, BR2.1)
+      tags: [VendorDirectory]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VendorInput" }
+      responses:
+        "201":
+          description: Vendedor creado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Vendor" }
+        "400":
+          description: "Presupuesto negativo o vacío (AC2.2.2, BR2.1) — VALIDATION_ERROR"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "403":
+          description: Rol no es supervisor (BR1.2)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /vendors/{vendorId}:
+    patch:
+      operationId: updateVendor
+      summary: Editar roster/presupuesto de un vendedor — FR2.1, FR2.2 (BR1.2, BR2.1)
+      tags: [VendorDirectory]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: vendorId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VendorInput" }
+      responses:
+        "200":
+          description: Vendedor actualizado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Vendor" }
+        "400":
+          description: "Presupuesto inválido (BR2.1)"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "403":
+          description: Rol no es supervisor (BR1.2)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Vendedor no existe
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # --- CommissionTier ---
+  /tiers:
+    get:
+      operationId: listTiers
+      summary: Listar tramos por canal — FR2.3
+      tags: [CommissionTier]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: channel, in: query, required: false, schema: { type: string, enum: [preventa, autoventa] } }
+      responses:
+        "200":
+          description: Tramos del canal, con indicador de orden
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TierListResponse" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      operationId: replaceTiers
+      summary: Reemplazar el conjunto de tramos de un canal — FR2.3 (BR1.2, BR2.2, BR2.3)
+      tags: [CommissionTier]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { $ref: "#/components/schemas/CommissionTierInput" }
+      responses:
+        "200":
+          description: >
+            Guardado exitoso; puede incluir warning si quedó fuera de orden
+            (BR2.3, ADR-003 de domain-design — guarda con advertencia, no bloquea)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TierSaveResponse" }
+        "400":
+          description: "Tramo inválido — campo vacío o negativo (BR2.2)"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "403":
+          description: Rol no es supervisor (BR1.2)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # --- SalesEntry ---
+  /sales:
+    post:
+      operationId: recordSale
+      summary: >
+        Registrar o corregir la venta del día — FR3.1, FR3.2, FR3.3 (BR3.1, BR3.2, BR3.3).
+        Idempotente por (vendorId, saleDate): un reintento del mismo envío
+        actualiza el mismo registro en vez de duplicarlo (ADR-004, AC3.3.4).
+      tags: [SalesEntry]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DailySaleInput" }
+      responses:
+        "200":
+          description: Venta guardada o corregida (día aún abierto)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DailySale" }
+        "400":
+          description: "Monto o devoluciones negativos/vacíos (FR3.2, BR3.1) — VALIDATION_ERROR"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "409":
+          description: "El día ya cerró; el valor quedó fijo (FR3.3, BR3.2) — no se puede corregir"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /sales/sync:
+    post:
+      operationId: syncSales
+      summary: >
+        Sincronizar un lote de ventas guardadas offline, cada una identificada
+        por su propia fecha — cada ítem se aplica de forma independiente, sin
+        fusión entre dispositivos (ADR-004, BR3.3).
+      tags: [SalesEntry]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { $ref: "#/components/schemas/DailySaleInput" }
+      responses:
+        "200":
+          description: Resultado por ítem del lote (aplicado / rechazado con motivo)
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/SyncResultItem" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # --- CommissionLedger ---
+  /commission/current:
+    get:
+      operationId: getCurrentCommission
+      summary: Reporte del período vigente en tiempo real — FR4.1, FR5, FR8.1
+      tags: [CommissionLedger]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Comisión, venta vs. presupuesto, indicador de devolución vigentes
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommissionPeriod" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /commission/history:
+    get:
+      operationId: getCommissionHistory
+      summary: Historial de períodos cerrados — FR6
+      tags: [CommissionLedger]
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: limit, in: query, required: false, schema: { type: integer } }
+      responses:
+        "200":
+          description: Lista de períodos cerrados, más recientes primero
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/CommissionPeriod" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # --- Notification ---
+  /notifications:
+    get:
+      operationId: listNotifications
+      summary: Notificaciones del vendedor autenticado, agrupadas por tipo en cliente — FR7, FR8.2, V5
+      tags: [Notification]
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Lista de notificaciones (umbral de venta/presupuesto, devolución, manual)
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Notification" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /notifications/manual:
+    post:
+      operationId: sendManualNotification
+      summary: >
+        Envío manual de notificación del supervisor a uno/varios/todos
+        los vendedores — FR9.1, pantalla A5 (BR1.3, BR9.1)
+      tags: [Notification]
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ManualNotificationInput" }
+      responses:
+        "202":
+          description: Notificación encolada para envío push
+        "400":
+          description: "Mensaje vacío o lista de destinatarios inválida (BR9.1)"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "401":
+          description: Sin sesión válida (BR1.1)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "403":
+          description: "Quien envía no es un supervisor autenticado (BR1.3)"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >
+        Token opaco (no JWT autocontenido) resuelto server-side contra Session
+        en cada petición — ver construction/api-contract/nfr-design/security-design.md.
+
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      description: Formato de error uniforme para toda la API (contract-summary.md).
+      properties:
+        code:
+          type: string
+          description: "Código estable, ej. VALIDATION_ERROR, UNAUTHORIZED, TIER_ORDER_WARNING"
+        message:
+          type: string
+          description: "Mensaje legible, en español, para mostrar o loguear"
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              reason: { type: string }
+          description: "Detalles de validación por campo, cuando aplica (ej. AC2.2.2 presupuesto negativo)"
+
+    LoginResponse:
+      type: object
+      properties:
+        token: { type: string }
+        userId: { type: string }
+        role: { type: string, enum: [vendedor, supervisor] }
+
+    Vendor:
+      type: object
+      description: Vendedor del roster, con su ruta, canal y presupuesto vigente (entities.md).
+      properties:
+        id: { type: string }
+        userId: { type: string }
+        route: { type: string }
+        name: { type: string }
+        channel: { type: string, enum: [preventa, autoventa] }
+        budget: { type: number }
+        active: { type: boolean }
+
+    VendorInput:
+      type: object
+      required: [route, name, channel, budget]
+      properties:
+        route: { type: string }
+        name: { type: string }
+        channel: { type: string, enum: [preventa, autoventa] }
+        budget: { type: number, minimum: 0.01 }
+
+    CommissionTier:
+      type: object
+      properties:
+        id: { type: string }
+        channel: { type: string, enum: [preventa, autoventa] }
+        tierType: { type: string, enum: ["por_devolucion", "por_efectividad"] }
+        order: { type: integer }
+        thresholdValue: { type: number }
+        commissionRate: { type: number }
+
+    CommissionTierInput:
+      type: object
+      required: [channel, tierType, order, thresholdValue, commissionRate]
+      properties:
+        channel: { type: string, enum: [preventa, autoventa] }
+        tierType: { type: string, enum: ["por_devolucion", "por_efectividad"] }
+        order: { type: integer }
+        thresholdValue: { type: number, minimum: 0 }
+        commissionRate: { type: number, minimum: 0 }
+
+    TierListResponse:
+      type: object
+      properties:
+        tiers:
+          type: array
+          items: { $ref: "#/components/schemas/CommissionTier" }
+        inOrder:
+          type: boolean
+          description: "Si el conjunto vigente de tramos del canal está ordenado de mejor a peor beneficio (AC2.3.2)"
+
+    TierSaveResponse:
+      type: object
+      properties:
+        tiers:
+          type: array
+          items: { $ref: "#/components/schemas/CommissionTier" }
+        inOrder: { type: boolean }
+        warning:
+          type: string
+          nullable: true
+          description: "TIER_ORDER_WARNING si el conjunto guardado quedó fuera de orden (BR2.3)"
+
+    DailySale:
+      type: object
+      properties:
+        id: { type: string }
+        vendorId: { type: string }
+        saleDate: { type: string, format: date }
+        amount: { type: number }
+        returns: { type: number }
+        syncStatus: { type: string, enum: [synced, pending] }
+        closed: { type: boolean }
+
+    DailySaleInput:
+      type: object
+      required: [saleDate, amount, returns]
+      properties:
+        saleDate: { type: string, format: date }
+        amount: { type: number, minimum: 0 }
+        returns: { type: number, minimum: 0 }
+
+    SyncResultItem:
+      type: object
+      properties:
+        saleDate: { type: string, format: date }
+        status: { type: string, enum: [applied, rejected] }
+        error:
+          allOf:
+            - { $ref: "#/components/schemas/Error" }
+          nullable: true
+
+    CommissionPeriod:
+      type: object
+      properties:
+        id: { type: string }
+        vendorId: { type: string }
+        periodMonth: { type: string, description: "AAAA-MM" }
+        accumulatedSales: { type: number }
+        accumulatedReturns: { type: number }
+        returnRate: { type: number }
+        commissionEarned: { type: number }
+        budgetProgress: { type: number, description: "% de venta acumulada sobre presupuesto vigente" }
+        closed: { type: boolean }
+        closedAt: { type: string, format: date-time, nullable: true }
+
+    Notification:
+      type: object
+      properties:
+        id: { type: string }
+        vendorId: { type: string }
+        type: { type: string, enum: ["umbral_venta", "umbral_devolucion", "manual"] }
+        thresholdCrossed: { type: number, nullable: true }
+        earningOpportunity:
+          type: object
+          nullable: true
+          description: "Solo en umbral_devolucion; omitido si los tramos del canal están fuera de orden (AC8.3.2)"
+          properties:
+            nextTierThreshold: { type: number }
+            potentialGain: { type: number }
+        message: { type: string }
+        sentAt: { type: string, format: date-time }
+        read: { type: boolean }
+
+    ManualNotificationInput:
+      type: object
+      required: [message, recipients]
+      properties:
+        message: { type: string, minLength: 1 }
+        recipients:
+          oneOf:
+            - type: string
+              enum: [all]
+            - type: array
+              items: { type: string }
+              description: "Lista de vendorId"

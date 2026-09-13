@@ -1,0 +1,41 @@
+{
+  "stage": "nfr-design",
+  "unit": "backend-api",
+  "upstream_ids": [
+    "NFR1.1", "NFR1.2", "NFR1.3", "NFR1.4",
+    "NFR3.1", "NFR3.2", "NFR3.6", "NFR3.7", "NFR3.8",
+    "NFR3.9", "NFR3.10", "NFR3.11", "NFR3.12", "NFR3.13",
+    "NFR4.1", "NFR4.2",
+    "NFR6.1", "NFR6.2", "NFR6.3", "NFR6.4", "NFR6.5", "NFR6.6", "NFR6.7", "NFR6.8", "NFR6.9",
+    "NFR7.1", "NFR7.2"
+  ],
+  "coverage": [
+    { "id": "NFR1.1", "status": "OK", "target": "Recálculo completo en una transacción Prisma + pool de conexión ya establecido (performance-design.md)" },
+    { "id": "NFR1.2", "status": "OK", "target": "Consulta indexada + agregación en memoria + tramos en memoria dentro de la transacción (performance-design.md)" },
+    { "id": "NFR1.3", "status": "OK", "target": "Lectura directa indexada, sin caché (performance-design.md, Q3)" },
+    { "id": "NFR1.4", "status": "OK", "target": "Procesamiento secuencial dentro del mismo request, sin cola de background (performance-design.md)" },
+    { "id": "NFR3.1", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md (continuación de numeración) — no es un requisito propio de esta unidad, su diseño ya vive en api-contract" },
+    { "id": "NFR3.2", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md — no es un requisito propio de esta unidad" },
+    { "id": "NFR3.6", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md — no es un requisito propio de esta unidad" },
+    { "id": "NFR3.7", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md — no es un requisito propio de esta unidad" },
+    { "id": "NFR3.8", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md — no es un requisito propio de esta unidad" },
+    { "id": "NFR3.9", "status": "OK", "target": "bcrypt.hash/compare, factor de costo 10 (security-design.md)" },
+    { "id": "NFR3.10", "status": "OK", "target": "AuthGuard global, token opaco, consulta indexada por token (security-design.md)" },
+    { "id": "NFR3.11", "status": "OK", "target": "RolesGuard + decorador @Roles, lee request.user.role ya resuelto (security-design.md)" },
+    { "id": "NFR3.12", "status": "OK", "target": "@nestjs/config con validación de esquema, fail-fast al arrancar (security-design.md, Q5)" },
+    { "id": "NFR3.13", "status": "OK", "target": "LoggingInterceptor excluye explícitamente credenciales y token completo (observability-design.md)" },
+    { "id": "NFR4.1", "status": "N/A", "target": "id de api-contract mencionado en el texto introductorio de security-requirements.md — no es un requisito propio de esta unidad" },
+    { "id": "NFR4.2", "status": "OK", "target": "Restricción UNIQUE(vendorId, saleDate) a nivel de esquema Prisma/PostgreSQL (security-design.md)" },
+    { "id": "NFR6.1", "status": "OK", "target": "Conexión pooled de Neon (pgBouncer), PrismaClient singleton por proceso (scalability-design.md)" },
+    { "id": "NFR6.2", "status": "OK", "target": "Sin warm-up activo; GET /health estándar para que el hosting lo consulte (reliability-design.md)" },
+    { "id": "NFR6.3", "status": "OK", "target": "Cron diario que evalúa condición de estado idempotente, auto-recupera cierres perdidos (reliability-design.md)" },
+    { "id": "NFR6.4", "status": "OK", "target": "Sin backup propio, depende del point-in-time recovery por defecto de Neon (reliability-design.md)" },
+    { "id": "NFR6.5", "status": "OK", "target": "Sin circuit breaker ni retry de escritura en servidor; timeout de contrato + idempotencia ya cubren la falla (reliability-design.md)" },
+    { "id": "NFR6.6", "status": "OK", "target": "LoggingInterceptor global emite JSON estructurado a stdout, sin plataforma externa (observability-design.md)" },
+    { "id": "NFR6.7", "status": "OK", "target": "Campos mínimos por request/error vía LoggingInterceptor + ExceptionFilter (observability-design.md)" },
+    { "id": "NFR6.8", "status": "OK", "target": "El job de cierre mensual emite su propio log de inicio/fin (observability-design.md)" },
+    { "id": "NFR6.9", "status": "OK", "target": "Sin SLI/SLO formales ni plataforma externa en el MVP — decisión de alcance documentada (observability-design.md)" },
+    { "id": "NFR7.1", "status": "OK", "target": "Ningún query/guard asume un supervisor singleton — activar uno nuevo es una operación de datos (scalability-design.md)" },
+    { "id": "NFR7.2", "status": "OK", "target": "Proyección de volumen por entidad; ninguna requiere partición/sharding en el MVP (scalability-design.md)" }
+  ]
+}

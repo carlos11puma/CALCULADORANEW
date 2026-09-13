@@ -1,0 +1,369 @@
+{
+  "stage": "code-generation",
+  "unit": "mobile-app",
+  "upstream_ids": [
+    "AC1.1.1",
+    "AC1.1.2",
+    "AC1.1.3",
+    "AC1.2.1",
+    "AC1.3.1",
+    "AC1.3.2",
+    "AC2.1.1",
+    "AC2.1.2",
+    "AC2.2.1",
+    "AC2.2.2",
+    "AC2.3.1",
+    "AC2.3.2",
+    "AC3.1.1",
+    "AC3.1.2",
+    "AC3.2.1",
+    "AC3.2.2",
+    "AC3.3.1",
+    "AC3.3.2",
+    "AC3.3.3",
+    "AC3.3.4",
+    "AC5.1.1",
+    "AC5.2.1",
+    "AC5.3.1",
+    "AC6.1.1",
+    "AC7.1.1",
+    "AC7.1.2",
+    "AC7.1.3",
+    "AC8.2.1",
+    "AC8.2.2",
+    "AC8.3.1",
+    "AC8.3.2",
+    "AC9.1.1",
+    "AC9.1.2",
+    "AC9.1.3",
+    "BR1.6",
+    "BR1.7",
+    "BR2.4",
+    "BR2.5",
+    "BR2.6",
+    "BR3.6",
+    "BR9.3",
+    "NFR1.1",
+    "NFR1.5",
+    "NFR1.6",
+    "NFR1.7",
+    "NFR3.14",
+    "NFR3.15",
+    "NFR3.16",
+    "NFR3.17",
+    "NFR4.3",
+    "NFR4.4"
+  ],
+  "coverage": [
+    {
+      "id": "AC1.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/VendorLoginScreen.tsx",
+      "notes": "MW1 — login vendedor, integra useLoginVendedor"
+    },
+    {
+      "id": "AC1.1.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/VendorLoginScreen.tsx",
+      "notes": "ErrorBanner ante 401 (mutation.isError)"
+    },
+    {
+      "id": "AC1.1.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/storage/secureSession.ts",
+      "notes": "sesión persistida vía expo-secure-store, consumida por SessionContext"
+    },
+    {
+      "id": "AC1.2.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/HomeScreen.tsx",
+      "notes": "MW3 — ConfirmDialog de logout + SessionContext.logout"
+    },
+    {
+      "id": "AC1.3.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/SupervisorLoginScreen.tsx",
+      "notes": "MW2 — login supervisor con PIN"
+    },
+    {
+      "id": "AC1.3.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/SupervisorLoginScreen.tsx",
+      "notes": "ErrorBanner ante 401"
+    },
+    {
+      "id": "AC2.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/RosterScreen.tsx",
+      "notes": "MW12 — alta de vendedor"
+    },
+    {
+      "id": "AC2.1.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/RosterScreen.tsx",
+      "notes": "MW12 — edición inline de tasa"
+    },
+    {
+      "id": "AC2.2.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/BudgetsScreen.tsx",
+      "notes": "MW13 — edición de presupuesto"
+    },
+    {
+      "id": "AC2.2.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/BudgetsScreen.tsx",
+      "notes": "BR2.5 — gating de presupuesto>0 en cliente"
+    },
+    {
+      "id": "AC2.3.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/tiers/TiersScreen.tsx",
+      "notes": "MW14 — formulario de tramos"
+    },
+    {
+      "id": "AC2.3.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/tiers/TiersScreen.tsx",
+      "notes": "banner de advertencia ante warning=TIER_ORDER_WARNING"
+    },
+    {
+      "id": "AC3.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "MW6 — guardado con conexión"
+    },
+    {
+      "id": "AC3.1.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "BR3.6 — gating de monto>0 en cliente"
+    },
+    {
+      "id": "AC3.2.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "MW5/MW6 — formulario precargado en modo edición"
+    },
+    {
+      "id": "AC3.2.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "modo solo-lectura ante 409 PERIOD_CLOSED"
+    },
+    {
+      "id": "AC3.3.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/storage/pendingSalesDb.ts",
+      "notes": "MW7 — escritura local en pending_sales sin conexión"
+    },
+    {
+      "id": "AC3.3.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/syncEngine.ts",
+      "notes": "MW8 — sincronización automática vía postSalesSync"
+    },
+    {
+      "id": "AC3.3.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/syncEngine.ts",
+      "notes": "lote de sincronización con N ventas de varios días (probado explícitamente)"
+    },
+    {
+      "id": "AC3.3.4",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/syncEngine.ts",
+      "notes": "fallo de red a mitad de sync no modifica pending_sales (rama finally)"
+    },
+    {
+      "id": "AC5.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/HomeScreen.tsx",
+      "notes": "MW4 — CommissionCard con commissionEarned"
+    },
+    {
+      "id": "AC5.2.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/HomeScreen.tsx",
+      "notes": "MW4 — ProgressBar de venta acumulada vs. presupuesto"
+    },
+    {
+      "id": "AC5.3.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/hooks.ts",
+      "notes": "invalidación de query de comisión tras guardar/sincronizar"
+    },
+    {
+      "id": "AC6.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/history/HistoryScreen.tsx",
+      "notes": "MW10 — lista de solo lectura de períodos cerrados"
+    },
+    {
+      "id": "AC7.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/NotificationsScreen.tsx",
+      "notes": "MW11 — notificación de comisión mostrada tal como la entrega backend-api"
+    },
+    {
+      "id": "AC7.1.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/grouping.ts",
+      "notes": "agrupación sin duplicar (delega la no-duplicación real a backend-api)"
+    },
+    {
+      "id": "AC7.1.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/NotificationsScreen.tsx",
+      "notes": "MW11 — renderizado de notificaciones recalculadas por backend-api"
+    },
+    {
+      "id": "AC8.2.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/grouping.ts",
+      "notes": "grupo DEVOLUCIÓN"
+    },
+    {
+      "id": "AC8.2.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/grouping.ts",
+      "notes": "no-duplicación de grupo DEVOLUCIÓN"
+    },
+    {
+      "id": "AC8.3.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/NotificationsScreen.tsx",
+      "notes": "texto de earningOpportunity mostrado tal como lo entrega backend-api"
+    },
+    {
+      "id": "AC8.3.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/notifications/NotificationsScreen.tsx",
+      "notes": "earningOpportunity null se omite sin recalcular"
+    },
+    {
+      "id": "AC9.1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.tsx",
+      "notes": "MW15 — selector de destinatarios y envío"
+    },
+    {
+      "id": "AC9.1.2",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.tsx",
+      "notes": "modo 'Todos los vendedores'"
+    },
+    {
+      "id": "AC9.1.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.tsx",
+      "notes": "BR9.3 — gating de mensaje/destinatarios vacío en cliente"
+    },
+    {
+      "id": "BR1.6",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/VendorLoginScreen.tsx",
+      "notes": "botón Ingresar deshabilitado hasta usuario+contraseña con contenido"
+    },
+    {
+      "id": "BR1.7",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/auth/SupervisorLoginScreen.tsx",
+      "notes": "botón deshabilitado hasta PIN de 4 dígitos"
+    },
+    {
+      "id": "BR2.4",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/RosterScreen.tsx",
+      "notes": "gating de campos requeridos del formulario de alta"
+    },
+    {
+      "id": "BR2.5",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/roster/BudgetsScreen.tsx",
+      "notes": "gating de presupuesto>0"
+    },
+    {
+      "id": "BR2.6",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/tiers/TiersScreen.tsx",
+      "notes": "gating de umbral/tasa de tramo"
+    },
+    {
+      "id": "BR3.6",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "gating de monto de venta>0"
+    },
+    {
+      "id": "BR9.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/manual-notification/ManualNotificationScreen.tsx",
+      "notes": "gating de mensaje/destinatarios"
+    },
+    {
+      "id": "NFR1.1",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/hooks.ts",
+      "notes": "N/A a nivel de infraestructura, pero a nivel de código: invalidación de queries evita refresco manual — contribuye al tiempo de feedback percibido"
+    },
+    {
+      "id": "NFR1.5",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/SalesEntryScreen.tsx",
+      "notes": "feedback optimista <100ms vía mutation.isPending/estado local"
+    },
+    {
+      "id": "NFR1.6",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/components/Skeletons.tsx",
+      "notes": "estados de carga tipo skeleton"
+    },
+    {
+      "id": "NFR1.7",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/home/returnRateTrend.ts",
+      "notes": "transformaciones en cliente (tendencia de tasa de devolución)"
+    },
+    {
+      "id": "NFR3.14",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/api/apiClient.ts",
+      "notes": "baseURL HTTPS obligatorio"
+    },
+    {
+      "id": "NFR3.15",
+      "status": "OK",
+      "target": "packages/mobile-app/app.config.ts",
+      "notes": "sin certificate pinning; TLS estándar del SO"
+    },
+    {
+      "id": "NFR3.16",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/storage/secureSession.ts",
+      "notes": "token en expo-secure-store"
+    },
+    {
+      "id": "NFR3.17",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/api/apiClient.ts",
+      "notes": "nunca loguear credenciales/comisiones — sin console.log de payloads sensibles"
+    },
+    {
+      "id": "NFR4.3",
+      "status": "OK",
+      "target": "packages/mobile-app/src/shared/storage/pendingSalesDb.ts",
+      "notes": "sin cifrado adicional de pending_sales, se apoya en cifrado del SO"
+    },
+    {
+      "id": "NFR4.4",
+      "status": "OK",
+      "target": "packages/mobile-app/src/features/sales-entry/syncEngine.ts",
+      "notes": "sincronización delega idempotencia al servidor (postSalesSync)"
+    }
+  ],
+  "deviations": [
+    "CI sin paso npm run lint (ningun workspace del monorepo tiene configuracion real de ESLint todavia; gap preexistente, no introducido por esta unidad).",
+    "eas-cli invocado via npx eas-cli@13 en el workflow en vez de como devDependency del workspace."
+  ]
+}

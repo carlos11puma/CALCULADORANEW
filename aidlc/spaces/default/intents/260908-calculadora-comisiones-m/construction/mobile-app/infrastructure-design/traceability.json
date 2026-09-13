@@ -1,0 +1,16 @@
+{
+  "stage": "infrastructure-design",
+  "unit": "mobile-app",
+  "upstream_ids": ["NFR1.1", "NFR1.5", "NFR1.6", "NFR1.7", "NFR3.14", "NFR3.15", "NFR3.16", "NFR4.3", "NFR4.4"],
+  "coverage": [
+    { "id": "NFR1.1", "status": "N/A", "target": "id de backend-api mencionado en prosa (self-reference del Review de nfr-design) — no es un id propio de mobile-app" },
+    { "id": "NFR1.5", "status": "N/A", "target": "resuelto a nivel de código (TanStack Query) en Code Generation, sin recurso de infraestructura dedicado" },
+    { "id": "NFR1.6", "status": "N/A", "target": "resuelto a nivel de código en Code Generation, sin recurso de infraestructura dedicado" },
+    { "id": "NFR1.7", "status": "N/A", "target": "resuelto a nivel de código en Code Generation, sin recurso de infraestructura dedicado" },
+    { "id": "NFR3.14", "status": "OK", "target": "EAS Build (perfiles preview/production, infrastructure-specification.md) — la configuración de Network Security Config/ATS se empaqueta en cada build nativo" },
+    { "id": "NFR3.15", "status": "N/A", "target": "decisión de código (sin dependencia de pinning), sin recurso de infraestructura propio" },
+    { "id": "NFR3.16", "status": "N/A", "target": "resuelto a nivel de código (expo-secure-store, API del SO) en Code Generation, sin recurso de infraestructura dedicado" },
+    { "id": "NFR4.3", "status": "N/A", "target": "decisión de código (sin capa de cifrado adicional), sin recurso de infraestructura propio" },
+    { "id": "NFR4.4", "status": "N/A", "target": "responsabilidad del contrato/servidor (backend-api), sin recurso de infraestructura propio en mobile-app" }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "stage": "nfr-requirements",
+  "unit": "infra (implícita — despliegue a producción, sin units-generation)",
+  "upstream_ids": ["FR1", "FR2", "FR3", "FR4", "FR5", "NFR1", "NFR2", "NFR3", "NFR4", "NFR5"],
+  "coverage": [
+    { "id": "FR1", "status": "N/A", "target": "prerequisitos técnicos (Prisma real, vulnerabilidades) — precondición de ejecución, no genera un NFR de este batch" },
+    { "id": "FR2", "status": "OK", "target": "tech-stack-decisions.md (documenta que FR2.1-FR2.4 no introducen tecnología nueva, solo aprovisionan lo ya diseñado)" },
+    { "id": "FR3", "status": "N/A", "target": "migración de datos iniciales — mecanismo ya resuelto (panel de administración de 260908), no genera un NFR nuevo de este batch" },
+    { "id": "FR4", "status": "OK", "target": "reliability-requirements.md NFR-D10 (NFR-D10.1-NFR-D10.4), NFR-D11 (FR4.2, FR4.3); security-requirements.md NFR-D7, NFR-D15, NFR-D17 (FR4.4); performance-requirements.md NFR-D1.2 (timeout del smoke test de FR4.2 = 2 min, [Q1])" },
+    { "id": "FR5", "status": "OK", "target": "observability-requirements.md NFR-D13 (FR5.1, notificaciones nativas Render+GitHub Actions, [Q2])" },
+    { "id": "NFR1", "status": "OK", "target": "security-requirements.md NFR-D5.1, NFR-D6.2; reliability-requirements.md NFR-D12.2" },
+    { "id": "NFR2", "status": "OK", "target": "security-requirements.md NFR-D4" },
+    { "id": "NFR3", "status": "OK", "target": "security-requirements.md NFR-D6; NFR-D16 (protección contra fuerza bruta en login, [Q4]) diferida a una ronda futura tras revisión de arquitectura — ver security-requirements.md NFR-D16" },
+    { "id": "NFR4", "status": "OK", "target": "performance-requirements.md NFR-D2.2 (cold start aceptado sin mitigación, [Q3]), NFR-D3; scalability-requirements.md NFR-D8, NFR-D9" },
+    { "id": "NFR5", "status": "OK", "target": "reliability-requirements.md NFR-D12.1 (sin SLA numérico, prima corrección sobre velocidad)" },
+    { "id": "Q1", "status": "OK", "target": "performance-requirements.md NFR-D1.2, tech-stack-decisions.md — timeout del smoke test = 2 minutos" },
+    { "id": "Q2", "status": "OK", "target": "observability-requirements.md NFR-D13.2, reliability-requirements.md NFR-D11.3, tech-stack-decisions.md — notificaciones nativas separadas de Render + GitHub Actions, sin correo consolidado" },
+    { "id": "Q3", "status": "OK", "target": "performance-requirements.md NFR-D2.2, tech-stack-decisions.md — cold start del free tier aceptado sin mitigación" },
+    { "id": "Q4", "status": "OK", "target": "security-requirements.md NFR-D16 — protección contra fuerza bruta en login, diferida a una ronda futura de Construction tras revisión de arquitectura (contradicción de alcance con requirements.md § Fuera de alcance)" },
+    { "id": "devsecops-finding-tls", "status": "OK", "target": "security-requirements.md NFR-D15 — HTTPS/TLS en tránsito explícito y verificable (feasibility-assessment.md 260908)" },
+    { "id": "compliance-finding-tls", "status": "OK", "target": "security-requirements.md NFR-D15 — mismo hallazgo, confirmado por compliance-agent" },
+    { "id": "devsecops-finding-dependency-gate", "status": "OK", "target": "security-requirements.md NFR-D17 — gate de CI bloqueante para vulnerabilidades de dependencias" },
+    { "id": "quality-finding-smoke-test-verifiability", "status": "OK", "target": "reliability-requirements.md NFR-D10.1 — caso de prueba concreto (vendedor/ruta/monto/comisión esperada, referenciando FR3)" },
+    { "id": "quality-finding-log-review-method", "status": "OK", "target": "reliability-requirements.md NFR-D10.3, security-requirements.md NFR-D7.4 — método grep/búsqueda concreto" },
+    { "id": "quality-finding-t10-gate", "status": "OK", "target": "reliability-requirements.md NFR-D10.4 — gate de re-verificación de T-10 antes del smoke test" }
+  ],
+  "notes": "Este intent no tiene functional-design ni units-generation (alcance infra); se trata como una unidad implícita única (la infraestructura de despliegue). Los IDs NFR-D1 a NFR-D14 (batch original) más NFR-D15/NFR-D16/NFR-D17 (añadidos en esta finalización a security-requirements.md: TLS en tránsito, fuerza bruta, gate de CI de dependencias) son una serie única y sin colisión en todo el batch — NFR-D8/NFR-D9 ya estaban tomados por scalability-requirements.md, por lo que los hallazgos nuevos de seguridad se numeraron a continuación de NFR-D14 en vez de reutilizarlos. Ninguno de estos IDs colisiona con los NFR1-NFR7 ya usados por backend-api/mobile-app en 260908."
+}

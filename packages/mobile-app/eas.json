@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 13.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "env": {
+        "API_BASE_URL": "https://api-dev.calculadora-comisiones.internal"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "env": {
+        "API_BASE_URL": "https://api-staging.calculadora-comisiones.internal"
+      }
+    },
+    "production": {
+      "distribution": "internal",
+      "channel": "production",
+      "env": {
+        "API_BASE_URL": "https://api.calculadora-comisiones.internal"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

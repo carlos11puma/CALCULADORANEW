@@ -1,0 +1,29 @@
+name: backend-api CI
+
+on:
+  pull_request:
+    paths:
+      - "packages/backend-api/**"
+      - "packages/api-contract/**"
+  push:
+    branches: [main]
+    paths:
+      - "packages/backend-api/**"
+      - "packages/api-contract/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install
+      - run: npm run build --workspace=packages/api-contract
+      - run: npm run prisma:generate --workspace=packages/backend-api
+      # Piso de cobertura 80% líneas/statements/funciones, 70% branches ya declarado en
+      # vitest.config.ts (team.md § Testing Posture) — --coverage lo aplica de verdad en CI
+      # (infrastructure-design/../ci-pipeline/ci-config.md § Cambio concreto: agregar --coverage).
+      - run: npm test --workspace=packages/backend-api -- --coverage
+      - run: npm run build --workspace=packages/backend-api

@@ -1,0 +1,22 @@
+{
+  "stage": "code-generation",
+  "unit": "api-contract",
+  "version": 1,
+  "writes": [
+    { "path": "package.json" },
+    { "path": "package-lock.json" },
+    { "path": ".gitignore" },
+    { "path": "packages/api-contract/package.json" },
+    { "path": "packages/api-contract/tsconfig.json" },
+    { "path": "packages/api-contract/vitest.config.ts" },
+    { "path": "packages/api-contract/openapi/openapi.yaml" },
+    { "path": "packages/api-contract/scripts/validate-contract.ts" },
+    { "path": "packages/api-contract/scripts/generate-types.ts" },
+    { "path": "packages/api-contract/src/types.ts" },
+    { "path": "packages/api-contract/__tests__/validate-contract.test.ts" },
+    { "path": "packages/api-contract/__tests__/generate-types.test.ts" },
+    { "path": "packages/api-contract/__fixtures__/broken-ref.yaml" },
+    { "path": "packages/api-contract/__fixtures__/missing-required-field.yaml" },
+    { "path": "packages/api-contract/README.md" }
+  ]
+}

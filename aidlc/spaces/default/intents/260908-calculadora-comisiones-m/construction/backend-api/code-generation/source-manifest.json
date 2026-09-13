@@ -1,0 +1,274 @@
+{
+  "stage": "code-generation",
+  "unit": "backend-api",
+  "version": 1,
+  "writes": [
+    {
+      "path": "packages/backend-api/.env.example"
+    },
+    {
+      "path": "packages/backend-api/.swcrc"
+    },
+    {
+      "path": "packages/backend-api/Dockerfile"
+    },
+    {
+      "path": "packages/backend-api/README.md"
+    },
+    {
+      "path": "packages/backend-api/__fixtures__/index.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/auth/auth.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/auth/auth.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/commission-ledger/commission-ledger.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/commission-ledger/commission-ledger.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/commission-tier/commission-tier.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/commission-tier/commission-tier.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/auth.guard.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/env.validation.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/errors.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/logging.interceptor.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/prisma.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/common/roles.guard.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/health/health.controller.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/auth.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/commission-ledger.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/commission-tier.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/notification.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/sales-entry.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/integration/vendor-directory.integration.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/notification/notification.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/notification/notification.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/sales-entry/sales-entry.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/sales-entry/sales-entry.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/setup.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/vendor-directory/vendor-directory.repository.test.ts"
+    },
+    {
+      "path": "packages/backend-api/__tests__/vendor-directory/vendor-directory.service.test.ts"
+    },
+    {
+      "path": "packages/backend-api/nest-cli.json"
+    },
+    {
+      "path": "packages/backend-api/package.json"
+    },
+    {
+      "path": "packages/backend-api/prisma/migrations/20260908000000_init/migration.sql"
+    },
+    {
+      "path": "packages/backend-api/prisma/migrations/migration_lock.toml"
+    },
+    {
+      "path": "packages/backend-api/prisma/schema.prisma"
+    },
+    {
+      "path": "packages/backend-api/render.yaml"
+    },
+    {
+      "path": "packages/backend-api/src/app.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/auth.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/auth.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/auth.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/auth.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/dto/login-supervisor.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/auth/dto/login-vendedor.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-ledger/commission-ledger.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-ledger/commission-ledger.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-ledger/commission-ledger.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-ledger/commission-ledger.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-tier/commission-tier.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-tier/commission-tier.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-tier/commission-tier.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-tier/commission-tier.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/commission-tier/dto/commission-tier-input.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/decorators/current-user.decorator.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/decorators/public.decorator.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/decorators/roles.decorator.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/errors.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/filters/http-exception.filter.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/guards/auth.guard.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/guards/login-throttler.guard.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/guards/roles.guard.ts"
+    },
+    {
+      "path": "packages/backend-api/src/common/interceptors/logging.interceptor.ts"
+    },
+    {
+      "path": "packages/backend-api/src/config/configuration.ts"
+    },
+    {
+      "path": "packages/backend-api/src/config/env.validation.ts"
+    },
+    {
+      "path": "packages/backend-api/src/health/health.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/health/health.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/main.ts"
+    },
+    {
+      "path": "packages/backend-api/src/notification/dto/manual-notification.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/notification/notification.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/notification/notification.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/notification/notification.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/notification/notification.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/prisma/prisma.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/prisma/prisma.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/sales-entry/dto/daily-sale-input.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/sales-entry/sales-entry.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/sales-entry/sales-entry.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/sales-entry/sales-entry.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/sales-entry/sales-entry.service.ts"
+    },
+    {
+      "path": "packages/backend-api/src/vendor-directory/dto/vendor-input.dto.ts"
+    },
+    {
+      "path": "packages/backend-api/src/vendor-directory/vendor-directory.controller.ts"
+    },
+    {
+      "path": "packages/backend-api/src/vendor-directory/vendor-directory.module.ts"
+    },
+    {
+      "path": "packages/backend-api/src/vendor-directory/vendor-directory.repository.ts"
+    },
+    {
+      "path": "packages/backend-api/src/vendor-directory/vendor-directory.service.ts"
+    },
+    {
+      "path": "packages/backend-api/tsconfig.json"
+    },
+    {
+      "path": "packages/backend-api/vitest.config.ts"
+    },
+    {
+      "path": "package.json"
+    },
+    {
+      "path": "package-lock.json"
+    },
+    {
+      "path": ".github/workflows/backend-api-ci.yml"
+    }
+  ]
+}

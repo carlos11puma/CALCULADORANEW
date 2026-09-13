@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: Fixture inválido — CommissionTierInput sin campos requeridos (BR2.2)
+  version: "1.0"
+paths:
+  /tiers:
+    put:
+      operationId: replaceTiers
+      tags: [CommissionTier]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { $ref: "#/components/schemas/CommissionTierInput" }
+      responses:
+        "200":
+          description: Guardado exitoso
+components:
+  schemas:
+    CommissionTierInput:
+      type: object
+      properties:
+        channel: { type: string, enum: [preventa, autoventa] }
+        tierType: { type: string, enum: ["por_devolucion", "por_efectividad"] }
+        order: { type: integer }
+        thresholdValue: { type: number }
+        commissionRate: { type: number }

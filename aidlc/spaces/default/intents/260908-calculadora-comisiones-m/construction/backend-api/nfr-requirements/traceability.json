@@ -1,0 +1,14 @@
+{
+  "stage": "nfr-requirements",
+  "unit": "backend-api",
+  "upstream_ids": ["NFR1", "NFR2", "NFR3", "NFR4", "NFR5", "NFR6", "NFR7"],
+  "coverage": [
+    { "id": "NFR1", "status": "OK", "target": "NFR1.1, NFR1.2, NFR1.3, NFR1.4" },
+    { "id": "NFR2", "status": "N/A", "target": "métrica de adopción/uso en campo (% de rutas que registran venta diaria) — se mide fuera del sistema (uso real por el equipo de ventas), no es un requisito técnico que backend-api implemente" },
+    { "id": "NFR3", "status": "OK", "target": "NFR3.9, NFR3.10, NFR3.11, NFR3.12, NFR3.13 (continúa NFR3.1-NFR3.8 de api-contract)" },
+    { "id": "NFR4", "status": "OK", "target": "NFR4.2 (continúa NFR4.1 de api-contract)" },
+    { "id": "NFR5", "status": "N/A", "target": "compatibilidad Android/iOS es responsabilidad de mobile-app (cliente React Native) — backend-api es agnóstico de la plataforma del dispositivo cliente" },
+    { "id": "NFR6", "status": "OK", "target": "NFR6.1, NFR6.2, NFR6.3, NFR6.4, NFR6.5, NFR6.6, NFR6.7, NFR6.8, NFR6.9" },
+    { "id": "NFR7", "status": "OK", "target": "NFR7.1, NFR7.2" }
+  ]
+}

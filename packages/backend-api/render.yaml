@@ -1,0 +1,37 @@
+# Despliegue en Render (infrastructure-specification.md, Q3 de
+# infrastructure-design-questions.md) — capa gratuita/económica priorizada
+# (project.md § Mandated). Dos servicios, uno por ambiente (staging/producción),
+# cada uno con su propia rama de Neon (operation/infrastructure-design/infrastructure-specification.md).
+# Único secreto real: DATABASE_URL — el backend usa sesiones opacas respaldadas en
+# Postgres, no JWT firmado, así que no existe un "JWT secret" que provisionar aquí
+# (operation/environment-provisioning/environment-provisioning-questions.md § Q1).
+services:
+  - type: web
+    name: backend-api-staging
+    runtime: docker
+    dockerfilePath: ./packages/backend-api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        sync: false # configurado manualmente en el dashboard de Render — apunta a la rama Neon "staging" — nunca commiteado
+
+  - type: web
+    name: backend-api-production
+    runtime: docker
+    dockerfilePath: ./packages/backend-api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        sync: false # configurado manualmente en el dashboard de Render — apunta a la rama Neon "main" — nunca commiteado

@@ -1,0 +1,39 @@
+{
+  "stage": "code-generation",
+  "unit": "api-contract",
+  "upstream_ids": [
+    "AC2.2.2", "AC2.3.2", "AC3.3.4", "FR1-auth", "FR2.2-authz", "FR3.2", "FR3.3", "FR9.1", "FR2.3-validation",
+    "BR1.1", "BR1.2", "BR1.3", "BR2.1", "BR2.2", "BR2.3", "BR3.1", "BR3.2", "BR3.3", "BR9.1",
+    "NFR3.1", "NFR3.2", "NFR3.3", "NFR3.4", "NFR3.5", "NFR3.6", "NFR3.7", "NFR3.8", "NFR4.1"
+  ],
+  "coverage": [
+    { "id": "AC2.2.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (VendorInput.budget minimum: 0.01)" },
+    { "id": "AC2.3.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (TierListResponse.inOrder, TierSaveResponse.warning)" },
+    { "id": "AC3.3.4", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (/sales, /sales/sync — idempotencia por vendorId+saleDate documentada en operationId description)" },
+    { "id": "FR1-auth", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (/auth/login/vendedor, /auth/login/supervisor, /auth/logout, bearerAuth securityScheme)" },
+    { "id": "FR2.2-authz", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (security: bearerAuth en POST/PATCH /vendors, 403 documentado)" },
+    { "id": "FR3.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (DailySaleInput.amount/returns minimum: 0)" },
+    { "id": "FR3.3", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (POST /sales, respuesta 409 documentada)" },
+    { "id": "FR9.1", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (ManualNotificationInput required: [message, recipients])" },
+    { "id": "FR2.3-validation", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (CommissionTierInput required: todos los campos — BR2.2)" },
+    { "id": "BR1.1", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (security: bearerAuth en todo endpoint salvo login; 401 documentado en cada uno)" },
+    { "id": "BR1.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (403 documentado en POST/PATCH /vendors, PUT /tiers)" },
+    { "id": "BR1.3", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (403 documentado en POST /notifications/manual)" },
+    { "id": "BR2.1", "status": "OK", "target": "packages/api-contract/__tests__/validate-contract.test.ts (refleja BR2.1 en VendorInput.budget)" },
+    { "id": "BR2.2", "status": "OK", "target": "packages/api-contract/__tests__/validate-contract.test.ts (refleja BR2.2 en CommissionTierInput)" },
+    { "id": "BR2.3", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (TierSaveResponse.warning nullable, respuesta 200 no 400)" },
+    { "id": "BR3.1", "status": "OK", "target": "packages/api-contract/__tests__/validate-contract.test.ts (refleja BR3.1 en DailySaleInput)" },
+    { "id": "BR3.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (POST /sales, respuesta 409)" },
+    { "id": "BR3.3", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (/sales, /sales/sync — idempotencia documentada en operationId description)" },
+    { "id": "BR9.1", "status": "OK", "target": "packages/api-contract/__tests__/validate-contract.test.ts (refleja BR9.1 en ManualNotificationInput)" },
+    { "id": "NFR3.1", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (bearerAuth securityScheme aplicado a todo endpoint salvo /auth/login/*; 401 documentado)" },
+    { "id": "NFR3.2", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (schemas Vendor/User no declaran passwordHash ni pin — nunca se exponen)" },
+    { "id": "NFR3.3", "status": "N/A", "target": "duración de sesión sin expiración por tiempo es comportamiento del servidor (backend-api la implementa); el contrato no declara un campo expiresAt en LoginResponse porque no aplica — sin target de código propio en esta unidad" },
+    { "id": "NFR3.4", "status": "N/A", "target": "TLS es responsabilidad de infraestructura (Infrastructure Design de backend-api) — sin target de código en esta unidad spec" },
+    { "id": "NFR3.5", "status": "N/A", "target": "rechazo de HTTP plano es responsabilidad de infraestructura — sin target de código en esta unidad spec" },
+    { "id": "NFR3.6", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (403 documentado en cada endpoint de administración y envío manual)" },
+    { "id": "NFR3.7", "status": "N/A", "target": "resolución server-side del rol es comportamiento de implementación (backend-api) — el contrato solo exige el resultado observable (403), ya cubierto por NFR3.6" },
+    { "id": "NFR3.8", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (/commission/current, /commission/history sin parámetro vendorId — se resuelve de la sesión)" },
+    { "id": "NFR4.1", "status": "OK", "target": "packages/api-contract/openapi/openapi.yaml (operationId recordSale/syncSales — idempotencia por vendorId+saleDate documentada)" }
+  ]
+}

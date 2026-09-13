@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "revision": 209,
+  "project_sha256": "7d31bb0925a8ebe3f027cc8a8044ac84476ffc1843825ff3fbbde4f3651f530f",
+  "intent_uuid": "01a07f48-4fbb-7652-b080-fb6ce71c95a1",
+  "state_present": true,
+  "state_sha256": "61bf40d5f183127deb6688c5d835156292f4143a5f833e17e957bda113e6d2ed",
+  "cursor_harness": "claude",
+  "owner_session": "sessionless:7d31bb0925a8ebe3",
+  "owner_epoch": 0,
+  "context_epoch": 0,
+  "kind": "run-stage",
+  "stage": "ci-pipeline",
+  "delivery": "issued",
+  "needs_rehydrate": false,
+  "active_attempt": {
+    "id": "sessionless",
+    "command_kind": "next",
+    "command_sha256": "bc668ec9d396ced165abafeeea01d8b5d24101fc2f39b924d459276ecfc59037",
+    "issued_state_sha256": "bc668ec9d396ced165abafeeea01d8b5d24101fc2f39b924d459276ecfc59037",
+    "session_id": "sessionless:7d31bb0925a8ebe3",
+    "owner_epoch": 0,
+    "context_epoch": 0,
+    "status": "settled"
+  },
+  "event_sequence": 0,
+  "human_sequence": 0,
+  "engine_sequence": 0,
+  "conversation_sequence": 0,
+  "stop_count": 0
+}

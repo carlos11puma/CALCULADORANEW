@@ -1,0 +1,33 @@
+name: dependency audit
+
+# Aviso NO bloqueante de vulnerabilidades de dependencias (npm audit) — decisión afirmada
+# con Carlos Puma en ci-pipeline: mantener visibilidad de nuevas vulnerabilidades críticas
+# sin frenar el trabajo diario del equipo. No es un required check de branch protection.
+# Vulnerabilidades ya conocidas al momento de Build and Test (ver
+# construction/build-and-test/test-results.md § Human decision): 1 crítica + 5 altas en
+# dependencias de producción de backend-api, 1 crítica + 11 altas en mobile-app — aceptadas
+# como riesgo conocido, pendientes de resolver antes de un despliegue de producción real.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Cada lunes 09:00 UTC — nuevas vulnerabilidades pueden aparecer sin que nadie toque el código.
+    - cron: "0 9 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        workspace: [api-contract, backend-api, mobile-app]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - name: npm audit (producción, no bloqueante)
+        run: npm audit --workspace=packages/${{ matrix.workspace }} --omit=dev --audit-level=high
