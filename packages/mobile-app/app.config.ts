@@ -1,6 +1,7 @@
 import type { ExpoConfig, ConfigContext } from "expo/config";
 
-// app.config.ts — configuración de Expo para Calculadora de Comisiones (mobile-app).
+// app.config.ts — configuración de Expo para Calculadora de Comisiones (mobile-app). Reintento de
+// build nativo tras falla de red transitoria en el worker de EAS (2026-09-13, séptimo hallazgo).
 // `API_BASE_URL` se inyecta por perfil de build/canal de update vía eas.json (extra.API_BASE_URL),
 // nunca hardcodeada aquí (project.md § Forbidden — nunca commitear secretos/config de entorno).
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -58,4 +59,3 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     policy: "appVersion",
   },
 });
-// trigger CI v2
