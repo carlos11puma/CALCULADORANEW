@@ -16,14 +16,14 @@
       "distribution": "internal",
       "channel": "preview",
       "env": {
-        "API_BASE_URL": "https://api-staging.calculadora-comisiones.internal"
+        "API_BASE_URL": "https://backend-api-staging-0q01.onrender.com"
       }
     },
     "production": {
       "distribution": "internal",
       "channel": "production",
       "env": {
-        "API_BASE_URL": "https://api.calculadora-comisiones.internal"
+        "API_BASE_URL": "https://backend-api-production-dffp.onrender.com"
       }
     }
   },
