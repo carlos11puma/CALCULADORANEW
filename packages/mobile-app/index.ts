@@ -9,5 +9,5 @@ import App from "./App";
 // lo cual rompe `expo export`/`eas update` ("Cannot resolve entry file") aunque
 // `expo start` y `eas build` (que sí resuelven módulos vía Node) funcionaran
 // bien. Ver operation/deployment-pipeline/decision-plataforma-android.md,
-// sexto hallazgo (2026-09-13).
+// sexto hallazgo (2026-09-13). Sin cambios de comportamiento en esta línea.
 registerRootComponent(App);
