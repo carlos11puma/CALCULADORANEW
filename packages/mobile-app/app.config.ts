@@ -6,7 +6,10 @@ import type { ExpoConfig, ConfigContext } from "expo/config";
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "Calculadora de Comisiones",
-  slug: "calculadora-comisiones",
+  // Debe coincidir exactamente con el slug real del proyecto EAS (expo.dev, cuenta
+  // CarlosPuma11) — Expo le agregó un sufijo aleatorio porque el nombre simple ya estaba
+  // tomado. No cambiar sin volver a verificar en el dashboard de Expo.
+  slug: "calculadora-comisiones-dsebrhufex4isgu0uooa9",
   version: "1.0.0",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
