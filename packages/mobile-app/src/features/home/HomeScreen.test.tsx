@@ -83,8 +83,8 @@ describe("HomeScreen (V2)", () => {
     });
     const { findByTestId } = renderHome();
     const chip = await findByTestId("return-rate-chip");
-    expect(JSON.stringify(chip)).toContain("10.2");
-    expect(JSON.stringify(chip)).not.toContain("Devolución: 0.1%");
+    expect(chip).toHaveTextContent("Devolución: 10.2%");
+    expect(chip).not.toHaveTextContent("Devolución: 0.1%");
   });
 
   it("estado error: muestra ErrorBanner con onRetry (pull-to-refresh)", async () => {
