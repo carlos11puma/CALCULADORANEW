@@ -94,6 +94,29 @@ describe("CommissionLedgerService", () => {
     expect(notificationService.evaluateReturnThresholds).toHaveBeenCalled();
   });
 
+  it("Fix (Deployment Execution, 260909, décimo hallazgo) — getCurrentPeriod convierte los campos Decimal de Prisma a number, nunca deja pasar el string que produce su toJSON()", async () => {
+    // Simula lo que realmente devuelve Prisma para un campo Decimal ya serializado: un
+    // string, no un number — así fallaba en la app real (`.toFixed is not a function`),
+    // aunque los fixtures de los demás tests (con `number` de JS) nunca lo detectaron.
+    const periodWithDecimalStrings = {
+      ...currentPeriodFixture,
+      accumulatedSales: "10000.00" as unknown as number,
+      accumulatedReturns: "500.00" as unknown as number,
+      returnRate: "0.050000" as unknown as number,
+      commissionEarned: "500.00" as unknown as number,
+    };
+    repository.findCurrentPeriod.mockResolvedValue(periodWithDecimalStrings);
+    prisma.vendor.findUniqueOrThrow.mockResolvedValue(preventaVendor);
+
+    const result = await service.getCurrentPeriod(preventaVendor.id);
+
+    expect(result.accumulatedSales).toBe(10000);
+    expect(result.accumulatedReturns).toBe(500);
+    expect(result.returnRate).toBe(0.05);
+    expect(result.commissionEarned).toBe(500);
+    expect(typeof result.commissionEarned).toBe("number");
+  });
+
   it("BR3.4 — isDateInClosedPeriod detecta un período cerrado para la fecha dada", async () => {
     repository.findByVendorAndMonth.mockResolvedValue({ closed: true });
     const result = await service.isDateInClosedPeriod(preventaVendor.id, new Date("2026-08-15T00:00:00.000Z"));

@@ -39,12 +39,15 @@ export class CommissionLedgerService {
       period = await this.repository.createEmptyPeriod(vendorId, currentMonth());
     }
     const vendor = await this.findVendorOrThrow(vendorId);
-    return { ...period, budgetProgress: this.budgetProgress(period, vendor) };
+    return this.toPeriodView(period, vendor);
   }
 
   /** BR6.1 — historial: solo períodos cerrados, más recientes primero. */
-  getHistory(vendorId: string, limit?: number): Promise<CommissionPeriod[]> {
-    return this.repository.findHistory(vendorId, limit);
+  async getHistory(vendorId: string, limit?: number): Promise<CommissionPeriod[]> {
+    const periods = await this.repository.findHistory(vendorId, limit);
+    // Fix (Deployment Execution, 260909, décimo hallazgo): ver toPeriodView() — sin esta
+    // conversión, los campos Decimal llegan como string al cliente y crashean la app.
+    return periods.map((period) => this.toNumericPeriod(period));
   }
 
   /** BR4.4 — recálculo completo (nunca incremental) del período vigente de un vendedor. */
@@ -84,7 +87,7 @@ export class CommissionLedgerService {
     await this.notificationService.evaluateSalesThresholds(vendor, updated);
     await this.notificationService.evaluateReturnThresholds(vendor, updated);
 
-    return { ...updated, budgetProgress: this.budgetProgress(updated, vendor) };
+    return this.toPeriodView(updated, vendor);
   }
 
   /** W5 paso 4 — cambio de tramos de un canal dispara BR4.4 para cada Vendor de ese canal. */
@@ -149,6 +152,33 @@ export class CommissionLedgerService {
 
   private budgetProgress(period: CommissionPeriod, vendor: Vendor): number {
     return (Number(period.accumulatedSales) / Number(vendor.budget)) * 100;
+  }
+
+  /**
+   * Fix (Deployment Execution, 260909, décimo hallazgo): los campos `Decimal` de Prisma
+   * (`accumulatedSales`, `accumulatedReturns`, `returnRate`, `commissionEarned`) son
+   * instancias de `decimal.js`, no `number` — su `toJSON()` devuelve un STRING (ej.
+   * `"0.00"`), así que sin esta conversión la respuesta HTTP manda esos campos como
+   * texto. La app (`HomeScreen.tsx`/`HistoryScreen.tsx`) llama `.toFixed()` directamente
+   * sobre ellos asumiendo que son `number`; sobre un string eso lanza
+   * `TypeError: ... .toFixed is not a function` sin capturar, lo que crashea la app —
+   * bug real detectado en el smoke test de Deployment Execution al loguear a Elizabeth
+   * por primera vez contra datos reales (ningún test existente lo detectó porque los
+   * fixtures de prueba usan `number` de JS directamente, nunca un `Prisma.Decimal` real
+   * serializado a JSON).
+   */
+  private toNumericPeriod(period: CommissionPeriod): CommissionPeriod {
+    return {
+      ...period,
+      accumulatedSales: Number(period.accumulatedSales) as unknown as CommissionPeriod["accumulatedSales"],
+      accumulatedReturns: Number(period.accumulatedReturns) as unknown as CommissionPeriod["accumulatedReturns"],
+      returnRate: Number(period.returnRate) as unknown as CommissionPeriod["returnRate"],
+      commissionEarned: Number(period.commissionEarned) as unknown as CommissionPeriod["commissionEarned"],
+    };
+  }
+
+  private toPeriodView(period: CommissionPeriod, vendor: Vendor): CommissionPeriodView {
+    return { ...this.toNumericPeriod(period), budgetProgress: this.budgetProgress(period, vendor) };
   }
 
   private async findVendorOrThrow(vendorId: string): Promise<Vendor> {
