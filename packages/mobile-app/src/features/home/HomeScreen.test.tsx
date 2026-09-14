@@ -68,6 +68,25 @@ describe("HomeScreen (V2)", () => {
     expect(getByTestId("commission-earned").props.children).toContain("250.50");
   });
 
+  it("Fix (Deployment Execution, 260909, undécimo hallazgo): muestra returnRate ×100 — llega como fracción (0.1023 = 10,23%), no como porcentaje", async () => {
+    (getCurrentCommission as jest.Mock).mockResolvedValue({
+      id: "c1",
+      vendorId: "v1",
+      periodMonth: "2026-09",
+      accumulatedSales: 9756,
+      accumulatedReturns: 998,
+      returnRate: 0.1023, // 998 / 9756 — caso real detectado en staging
+      commissionEarned: 0,
+      budgetProgress: 9.756,
+      closed: false,
+      closedAt: null,
+    });
+    const { findByTestId } = renderHome();
+    const chip = await findByTestId("return-rate-chip");
+    expect(JSON.stringify(chip)).toContain("10.2");
+    expect(JSON.stringify(chip)).not.toContain("Devolución: 0.1%");
+  });
+
   it("estado error: muestra ErrorBanner con onRetry (pull-to-refresh)", async () => {
     (getCurrentCommission as jest.Mock).mockRejectedValue(new Error("network"));
     const { findByText } = renderHome();

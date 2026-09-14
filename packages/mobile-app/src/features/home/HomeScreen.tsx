@@ -71,7 +71,11 @@ export function HomeScreen({ onEnterSale }: HomeScreenProps): React.JSX.Element 
             testID="budget-progress"
           />
           <Chip icon={trend === "down" ? "arrow-down" : trend === "up" ? "arrow-up" : "minus"} testID="return-rate-chip">
-            Devolución: {commission?.returnRate.toFixed(1)}%
+            {/* Fix (Deployment Execution, 260909, undécimo hallazgo): `returnRate` llega como
+                fracción (ej. 0.1023 = 10,23%), no como porcentaje ya multiplicado — sin el ×100
+                se mostraba 100 veces más chico (ej. "0.1%" en vez de "10.2%"). Detectado en el
+                smoke test al comparar contra el dato real guardado en la base. */}
+            Devolución: {((commission?.returnRate ?? 0) * 100).toFixed(1)}%
           </Chip>
         </Card.Content>
       </Card>
