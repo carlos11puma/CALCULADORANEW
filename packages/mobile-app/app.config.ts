@@ -2,6 +2,11 @@ import type { ExpoConfig, ConfigContext } from "expo/config";
 
 // app.config.ts — configuración de Expo para Calculadora de Comisiones (mobile-app). Reintento de
 // build nativo tras falla de red transitoria en el worker de EAS (2026-09-13, séptimo hallazgo).
+// Segundo reintento (2026-09-17, duodécimo hallazgo): el build del commit 3616735 (que agregó
+// expo-updates) falló por otra falla de red transitoria del lado de EAS, ahora descargando
+// SQLite para expo-sqlite (`java.net.SocketException: Network is unreachable`), no relacionada
+// con el cambio de código. Este comentario fuerza un commit que toca app.config.ts (path nativo)
+// para disparar un build nuevo vía mobile-app-ci.yml sin tocar lógica.
 // `API_BASE_URL` se inyecta por perfil de build/canal de update vía eas.json (extra.API_BASE_URL),
 // nunca hardcodeada aquí (project.md § Forbidden — nunca commitear secretos/config de entorno).
 export default ({ config }: ConfigContext): ExpoConfig => ({
